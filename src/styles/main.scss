@@ -22,7 +22,7 @@ h1 {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 2rem 3rem;
+    padding: 2rem 1rem;
     width: 15rem;
     height: 100vh;
     transition: 0.5s all;
@@ -32,16 +32,22 @@ h1 {
         align-items: center;
         justify-content: flex-start;
 
+
+        svg {
+            color: $primary;
+
+        }
+    
         h2.title {
             font-size: 31.42px;
-            color: $green;
+            color: $primary;
             padding: 0 0 0 1rem;
         }
     }
 
     .burgerContainer {
         content: "";
-        background-color: $green;
+        background-color: $primary;
         position: absolute;
         right: (-35px / 2);
         top: calc(9rem / 1.15);
@@ -63,7 +69,7 @@ h1 {
 
         .burgerMenu {
             content: "";
-            background-color: $green;
+            background-color: $primary;
             position: relative;
             z-index: 1;
             width: 20px;
@@ -163,12 +169,13 @@ h1 {
                 flex-direction: row;
                 margin: 0.75rem 0;
                 padding: 0.75rem 0;
-                width: 100%;
-                border-radius: 1rem;
+                border-radius: 4px;
                 cursor: pointer;
+                width: 100%;
 
-                img {
-                    padding: 0 1rem 0 0.5rem;
+                svg {
+                    padding: 0px 8px;
+                    color: $darkGrey;
                 }
 
                 a {
@@ -178,21 +185,33 @@ h1 {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    margin: 0 0 0 0.5rem;
                 }
             }
 
             li.active {
-                background-color: $veryLightGreen;
+                background-color: $primary;
+                width: 100%;
 
                 a {
-                    color: $green;
+                    color: $white;
                 }
+            }
+
+            .active svg {
+                color: $white;
+                padding: 0px 8px;
             }
 
             li:hover {
                 background-color: $lightGrey;
                 transition: 0.25s;
+                width: 100%;
+            }
+
+            li.active:hover {
+                background-color: $primary;
+                transition: 0.25s;
+                width: 100%;
             }
         }
     }
@@ -201,13 +220,18 @@ h1 {
 .sidebar.active {
     width: 3rem;
     transition: 0.5s all;
-
+    
     .logoContainer.active {
+        // padding: 22px;
+
+        svg {
+            color: $primary;
+        }
         h2.title {
+            display: none;
             opacity: 0;
         }
     }
-
     .burgerContainer.active {
         transition: 0.5s all;
         .burgerMenu {
@@ -226,14 +250,27 @@ h1 {
         }
     }
 
+
+
     .profileContainer {
+        padding: 8rem 0 0 0;
         .profileContents {
             opacity: 0;
         }
     }
 
     .contentsContainer {
-        a {
+        li {
+            a {
+                opacity: 0;
+                width: 0;
+                margin: 0;
+                transition: 0.5s;
+                display: none;
+            }
+        }
+
+        .active a {
             opacity: 0;
         }
     }
