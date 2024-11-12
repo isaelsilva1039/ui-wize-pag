@@ -6,10 +6,11 @@ import Profile from "../Images/profile.png";
 import { PiMonitorFill, PiUsersThreeFill } from "react-icons/pi";
 import { MdOutlinePayment } from "react-icons/md";
 
-const Sidebar = () => {
+const Sidebar = ({ closeMenu, setCloseMenu }) => {
+
     const location = useLocation();
     const navigate = useNavigate(); // Use o hook useNavigate para navegação
-    const [closeMenu, setCloseMenu] = useState(false);
+    // const [closeMenu, setCloseMenu] = useState(false);
 
     const handleCloseMenu = () => {
         setCloseMenu(!closeMenu);
@@ -20,9 +21,11 @@ const Sidebar = () => {
         navigate(path); // Navegação sem refresh da página
     };
 
+    
+
     return (
         <div className={closeMenu ? "sidebar active" : "sidebar"}>
-            <div className={closeMenu ? "logoContainer active" : "logoContainer"}>
+            <div className={closeMenu ? "logoContainer active" : "logoContainer"} onClick={handleCloseMenu}>
                 <FaNetworkWired size={closeMenu ? '40px' : '30px'} />
                 <h2 className="title">Work</h2>
             </div>

@@ -1,5 +1,43 @@
 @import "./_variables";
 
+
+
+.app-container {
+    display: flex;
+    height: 100%;
+}
+
+.sidebar {
+    width: 250px;
+    transition: width 0.5s;
+    &.active {
+        width: 250px;
+    }
+    &.closed {
+        width: 60px;
+    }
+}
+
+.main-content {
+    flex: 1 1;
+    padding: 0px 24px;
+    transition: margin-left 0.5s;
+    height: 100vh;
+    overflow-x: hidden;
+
+    &.sidebar-open {
+        margin-left: 250px;
+    }
+
+    &.sidebar-closed {
+        margin-left: 60px;
+    }
+}
+
+
+
+
+
 body {
     overflow: hidden;
     height: 100vh;
@@ -10,7 +48,7 @@ body {
 }
 
 h1 {
-    width: 100vw;
+    // width: 100vw;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -273,5 +311,91 @@ h1 {
         .active a {
             opacity: 0;
         }
+    }
+}
+
+
+.navbar {
+    background-color: $primary;
+    padding: 14px;
+    display: flex;
+    flex: 1 1;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    width: -moz-fit-content;
+    width: 100%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+
+}
+
+.navbar .logout{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar .menu {
+    display: flex;
+    gap: 1rem;
+}
+
+.navbar .menu-item {
+    color: #fff;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+.navbar .menu-item:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+.navbar .menu-item.active {
+    background-color: #555;
+    color: #fff;
+}
+
+.navbar .menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .navbar .menu {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #333;
+        width: 100%;
+    }
+
+    .navbar .menu-item {
+        padding: 1rem;
+        border-bottom: 1px solid #444;
+    }
+
+    .navbar .menu-toggle {
+        display: block;
+    }
+
+    .navbar.active .menu {
+        display: flex;
     }
 }
