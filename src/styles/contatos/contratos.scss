@@ -1,0 +1,28 @@
+@import "../_variables";
+
+
+.container{
+        background: #ffffff;
+        width: -moz-fit-content;
+        width: fit-content;
+        padding: 0px 0px 6px 24px;
+        margin-top: 4px;
+        display: flex;
+        width: 98%;
+        margin-top: 50px;
+        border: 8px solid $veryLightGreen;
+
+    &__form{
+        max-width: 1350px;
+    }
+    &__btn-salvar{
+        background: $primary !important;
+        display: flex;
+        gap: 12px;
+    }
+
+    &__cancelar{
+        color: black !important;
+    }
+    
+}

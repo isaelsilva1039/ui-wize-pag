@@ -1,5 +1,3 @@
-// src/components/Contratos/Contratos.jsx
-
 import React, { useState } from "react";
 import {
     Tabs,
@@ -15,20 +13,21 @@ import {
     Alert,
 } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Importação do ícone do MUI
-import ClientForm from "../components/Contratos/ClientForm";
-import ClientTable from "../components/Contratos/ClientTable";
+
 import '../styles/contatos/contratos.scss'
 import { FaCheckCircle, FaUser } from "react-icons/fa";
-import mockClientes from "../mocks/clientes";
 
-const Contratos = () => {
+import FilialTable from "../components/FIlial/FilialTable";
+import mockFiliais from "../mocks/mockFiliais";
+import FilialForm from "../components/FIlial/FilialForm";
+
+const Filial = () => {
     const [tabIndex, setTabIndex] = useState(0);
     const [open, setOpen] = useState(false);
-    const [clientes, setClientes] = useState(mockClientes);
+    const [filiais, setFiliais] = useState(mockFiliais);
 
-    const [editCliente, setEditCliente] = useState(false);
+    const [editFilial, setEditFilial] = useState(false);
 
-    // Estado para o Snackbar
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -36,103 +35,87 @@ const Contratos = () => {
         setTabIndex(newIndex);
     };
 
-    // Abrir a Modal
+
     const handleOpen = () => {
         setOpen(true);
     };
 
-    // Fechar a Modal
     const handleClose = () => {
         setOpen(false);
     };
 
-    // Adicionar um novo cliente
-    const addCliente = (cliente) => {
-        setClientes((prevClientes) => [...prevClientes, cliente]);
-        setSnackbarMessage("Cliente cadastrado com sucesso!");
+
+    const addFilial = (filial) => {
+        setFiliais((prevFiliais) => [...prevFiliais, filial]);
+        setSnackbarMessage("Filial cadastrada com sucesso!");
         setSnackbarOpen(true);
     };
 
-    // Atualizar um cliente existente
-    const updateCliente = (index, updatedCliente) => {
-        setClientes((prevClientes) => {
-            const newClientes = [...prevClientes];
-            newClientes[index] = updatedCliente;
-            return newClientes;
+
+    const updateFilial = (index, updatedFilial) => {
+        setFiliais((prevFiliais) => {
+            const newFiliais = [...prevFiliais];
+            newFiliais[index] = updatedFilial;
+            return newFiliais;
         });
-        setSnackbarMessage("Cliente atualizado com sucesso!");
+        setSnackbarMessage("Filial atualizada com sucesso!");
         setSnackbarOpen(true);
     };
 
-    // Remover um cliente
-    const removeCliente = (index) => {
-        setClientes((prevClientes) => prevClientes.filter((_, i) => i !== index));
-        setSnackbarMessage("Cliente removido com sucesso!");
+    const removerFilial = (index) => {
+        setFiliais((prevFiliais) => prevFiliais.filter((_, i) => i !== index));
+        setSnackbarMessage("Filial removida com sucesso!");
         setSnackbarOpen(true);
     };
 
-    // Definição das colunas específicas para clientes
-    const clientColumns = [
-        { id: "id", label: "id", visible: true },
-        { id: "nome", label: "Nome", visible: true },
-        { id: "cnpj", label: "CNPJ", visible: true },
-        { id: "cpf", label: "CPF", visible: true },
+    const filialColumns = [
+        { id: "id", label: "ID", visible: true },
+        { id: "descricao", label: "Descrição", visible: true },
+        { id: "razaoSocial", label: "Razão Social", visible: true },
+        { id: "nomeFantasia", label: "Nome Fantasia", visible: true },
         { id: "endereco", label: "Endereço", visible: true },
-        { id: "pdv", label: "PDV", visible: true },
-        { id: "ativoInativo", label: "Status", visible: true },
-        { id: "telefone", label: "Telefone", visible: true },
-        { id: "whatsapp", label: "WhatsApp", visible: true },
-        { id: "email", label: "Email", visible: true },
-        { id: "responsavel", label: "Responsável", visible: true },
-        { id: "actions", label: "Ações", visible: true },
+        { id: "actions", label: "Ações", visible: true }, // Coluna para ações, sempre visível
     ];
 
     return (
         <div className="container">
             <Box sx={{ width: "100%", p: 3 }}>
-              
                 <Tabs value={tabIndex} onChange={handleTabChange}>
-                    <Tab label="Contratos" />
-
+                    <Tab label="Filial" />
                 </Tabs>
 
                 {tabIndex === 0 && (
                     <Box sx={{ mt: 3 }}>
                         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                            <Typography variant="h6" gutterBottom>
-
-                            </Typography>
+                            <Typography variant="h6" gutterBottom></Typography>
                             <Button
                                 variant="contained"
                                 color="primary"
                                 onClick={handleOpen}
                                 startIcon={<FaUser />}
                             >
-                                Adicionar Novo
+                                Nova Filial
                             </Button>
                         </Box>
-                        <ClientTable
-                            columns={clientColumns}
-                            data={clientes}
-                            onEdit={(item, index) => setEditCliente({ item, index })}
-                            onDelete={removeCliente}
+                        <FilialTable
+                            columns={filialColumns}
+                            data={filiais}
+                            onEdit={(item, index) => setEditFilial({ item, index })}
+                            onDelete={removerFilial}
                         />
                     </Box>
                 )}
             </Box>
 
-
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-                <DialogTitle>Cadastro de Contrato</DialogTitle>
+                <DialogTitle>Cadastro de Filial</DialogTitle>
                 <DialogContent>
-                    <ClientForm onSubmit={addCliente} onClose={handleClose} />
+                    <FilialForm onSubmit={addFilial} onClose={handleClose} />
                 </DialogContent>
                 <DialogActions>
-
-                    <Button onClick={handleClose}  className="container__cancelar">
+                    <Button onClick={handleClose} className="container__cancelar">
                         Cancelar
                     </Button>
-
                     <Button
                         className="container__btn-salvar"
                         type="submit"
@@ -142,32 +125,30 @@ const Contratos = () => {
                     >
                         Cadastrar
                     </Button>
-
                 </DialogActions>
             </Dialog>
 
-
-
-{editCliente && (
+            {/* Modal para Edição de Filial */}
+            {editFilial && (
                 <Dialog
-                    open={Boolean(editCliente)}
-                    onClose={() => setEditCliente(null)}
+                    open={Boolean(editFilial)}
+                    onClose={() => setEditFilial(null)}
                     fullWidth
                     maxWidth="sm"
                 >
-                    <DialogTitle>Editar Cliente</DialogTitle>
+                    <DialogTitle>Editar Filial</DialogTitle>
                     <DialogContent>
-                        <ClientForm
-                            onSubmit={(updatedCliente) => {
-                                updateCliente(editCliente.index, updatedCliente);
-                                setEditCliente(null);
+                        <FilialForm
+                            onSubmit={(updatedFilial) => {
+                                updateFilial(editFilial.index, updatedFilial);
+                                setEditFilial(null);
                             }}
-                            onClose={() => setEditCliente(null)}
-                            initialData={editCliente.item}
+                            onClose={() => setEditFilial(null)}
+                            initialData={editFilial.item}
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => setEditCliente(null)} className="container__cancelar" color="secondary">
+                        <Button onClick={() => setEditFilial(null)} className="container__cancelar" color="secondary">
                             Cancelar
                         </Button>
                         <Button
@@ -176,15 +157,13 @@ const Contratos = () => {
                             variant="contained"
                             color="primary"
                             endIcon={<CheckCircleIcon />}
-                            form="client-form"
+                            form="filial-form"
                         >
                             Atualizar
                         </Button>
                     </DialogActions>
                 </Dialog>
             )}
-
-
 
             <Snackbar
                 open={snackbarOpen}
@@ -200,4 +179,4 @@ const Contratos = () => {
     );
 };
 
-export default Contratos;
+export default Filial;

@@ -216,19 +216,20 @@ h1 {
                     color: $darkGrey;
                 }
 
-                a {
+                // a {
                     text-decoration: none;
                     color: $darkGrey;
                     font-size: 20px;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                }
+                // }
             }
 
             li.active {
                 background-color: $primary;
                 width: 100%;
+                color: $white;
 
                 a {
                     color: $white;
@@ -326,7 +327,8 @@ h1 {
     font-family: Arial, sans-serif;
     width: -moz-fit-content;
     width: 100%;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    position: fixed;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2)
 
 }
 

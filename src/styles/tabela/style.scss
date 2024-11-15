@@ -1,0 +1,26 @@
+@import "../_variables";
+
+// contratos.scss
+
+table thead {
+    background: $veryLightGreen; // Cor de fundo ao passar o mouse
+    height: 10px !important;
+
+    th {
+        height: 10px !important;
+    }
+
+    tr th {
+        font-weight: 600 !important;
+    }
+}
+
+table tbody tr {
+    border-left: 4px solid transparent; // Borda inicial transparente
+    transition: border-left-color 0.3s ease, background 0.3s ease; // Definindo as transições
+
+    &:hover {
+        background: $veryLightGreen; // Cor de fundo ao passar o mouse
+        border-left-color: $primary; // Mudança suave da cor da borda
+    }
+}

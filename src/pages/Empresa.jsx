@@ -16,19 +16,20 @@ import {
 } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Importação do ícone do MUI
 import ClientForm from "../components/Contratos/ClientForm";
-import ClientTable from "../components/Contratos/ClientTable";
 import '../styles/contatos/contratos.scss'
 import { FaCheckCircle, FaUser } from "react-icons/fa";
-import mockClientes from "../mocks/clientes";
 
-const Contratos = () => {
+import EmpresaTable from "../components/Empresa/EmpresaTable";
+import EmpresaForm from "../components/Empresa/EmpresaForm";
+import mockEmpresas from "../mocks/empresa";
+
+const Empresa = () => {
     const [tabIndex, setTabIndex] = useState(0);
     const [open, setOpen] = useState(false);
-    const [clientes, setClientes] = useState(mockClientes);
+    const [empresa, setEmpresa] = useState(mockEmpresas);
 
-    const [editCliente, setEditCliente] = useState(false);
+    const [editEmpresa, setEditEmpresa] = useState(false);
 
-    // Estado para o Snackbar
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -36,26 +37,25 @@ const Contratos = () => {
         setTabIndex(newIndex);
     };
 
-    // Abrir a Modal
+
     const handleOpen = () => {
         setOpen(true);
     };
 
-    // Fechar a Modal
     const handleClose = () => {
         setOpen(false);
     };
 
-    // Adicionar um novo cliente
-    const addCliente = (cliente) => {
-        setClientes((prevClientes) => [...prevClientes, cliente]);
+
+    const addEmpresa = (cliente) => {
+        setEmpresa((prevClientes) => [...prevClientes, cliente]);
         setSnackbarMessage("Cliente cadastrado com sucesso!");
         setSnackbarOpen(true);
     };
 
-    // Atualizar um cliente existente
-    const updateCliente = (index, updatedCliente) => {
-        setClientes((prevClientes) => {
+
+    const updateEmpresa = (index, updatedCliente) => {
+        setEmpresa((prevClientes) => {
             const newClientes = [...prevClientes];
             newClientes[index] = updatedCliente;
             return newClientes;
@@ -64,35 +64,29 @@ const Contratos = () => {
         setSnackbarOpen(true);
     };
 
-    // Remover um cliente
-    const removeCliente = (index) => {
-        setClientes((prevClientes) => prevClientes.filter((_, i) => i !== index));
-        setSnackbarMessage("Cliente removido com sucesso!");
+    const removerEmpresa = (index) => {
+        setEmpresa((prevClientes) => prevClientes.filter((_, i) => i !== index));
+        setSnackbarMessage("Empresa removido com sucesso!");
         setSnackbarOpen(true);
     };
 
-    // Definição das colunas específicas para clientes
-    const clientColumns = [
+    const empresaColluns = [
         { id: "id", label: "id", visible: true },
-        { id: "nome", label: "Nome", visible: true },
-        { id: "cnpj", label: "CNPJ", visible: true },
-        { id: "cpf", label: "CPF", visible: true },
+        { id: "descricao", label: "Descrição", visible: true },
+        { id: "razaoSocial", label: "Razão Social", visible: true },
+        { id: "nomeFantasia", label: "Nome Fantasia", visible: true },
         { id: "endereco", label: "Endereço", visible: true },
-        { id: "pdv", label: "PDV", visible: true },
-        { id: "ativoInativo", label: "Status", visible: true },
-        { id: "telefone", label: "Telefone", visible: true },
-        { id: "whatsapp", label: "WhatsApp", visible: true },
-        { id: "email", label: "Email", visible: true },
-        { id: "responsavel", label: "Responsável", visible: true },
-        { id: "actions", label: "Ações", visible: true },
+        { id: "actions", label: "Ações", visible: true }, // Coluna para ações, sempre visível
     ];
 
     return (
         <div className="container">
             <Box sx={{ width: "100%", p: 3 }}>
-              
+                {/* <Typography variant="h4" gutterBottom>
+                    Contratos
+                </Typography> */}
                 <Tabs value={tabIndex} onChange={handleTabChange}>
-                    <Tab label="Contratos" />
+                    <Tab label="Empresa" />
 
                 </Tabs>
 
@@ -108,14 +102,14 @@ const Contratos = () => {
                                 onClick={handleOpen}
                                 startIcon={<FaUser />}
                             >
-                                Adicionar Novo
+                                Nova Empresa
                             </Button>
                         </Box>
-                        <ClientTable
-                            columns={clientColumns}
-                            data={clientes}
-                            onEdit={(item, index) => setEditCliente({ item, index })}
-                            onDelete={removeCliente}
+                        <EmpresaTable
+                            columns={empresaColluns}
+                            data={empresa}
+                            onEdit={(item, index) => setEditEmpresa({ item, index })}
+                            onDelete={removerEmpresa}
                         />
                     </Box>
                 )}
@@ -123,13 +117,13 @@ const Contratos = () => {
 
 
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-                <DialogTitle>Cadastro de Contrato</DialogTitle>
+                <DialogTitle>Cadastro de Empresa</DialogTitle>
                 <DialogContent>
-                    <ClientForm onSubmit={addCliente} onClose={handleClose} />
+                    <EmpresaForm onSubmit={addEmpresa} onClose={handleClose} />
                 </DialogContent>
                 <DialogActions>
 
-                    <Button onClick={handleClose}  className="container__cancelar">
+                    <Button onClick={handleClose} className="container__cancelar">
                         Cancelar
                     </Button>
 
@@ -147,27 +141,27 @@ const Contratos = () => {
             </Dialog>
 
 
-
-{editCliente && (
+            {/* Modal para Edição de Cliente */}
+            {editEmpresa && (
                 <Dialog
-                    open={Boolean(editCliente)}
-                    onClose={() => setEditCliente(null)}
+                    open={Boolean(editEmpresa)}
+                    onClose={() => setEditEmpresa(null)}
                     fullWidth
                     maxWidth="sm"
                 >
-                    <DialogTitle>Editar Cliente</DialogTitle>
+                    <DialogTitle>Editar Empresa</DialogTitle>
                     <DialogContent>
-                        <ClientForm
+                        <EmpresaForm
                             onSubmit={(updatedCliente) => {
-                                updateCliente(editCliente.index, updatedCliente);
-                                setEditCliente(null);
+                                updateEmpresa(editEmpresa.index, updatedCliente);
+                                setEditEmpresa(null);
                             }}
-                            onClose={() => setEditCliente(null)}
-                            initialData={editCliente.item}
+                            onClose={() => setEditEmpresa(null)}
+                            initialData={editEmpresa.item}
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => setEditCliente(null)} className="container__cancelar" color="secondary">
+                        <Button onClick={() => setEditEmpresa(null)} className="container__cancelar" color="secondary">
                             Cancelar
                         </Button>
                         <Button
@@ -200,4 +194,4 @@ const Contratos = () => {
     );
 };
 
-export default Contratos;
+export default Empresa;

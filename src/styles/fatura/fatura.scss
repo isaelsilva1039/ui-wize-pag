@@ -1,0 +1,15 @@
+@import "../_variables";
+
+.fatura{
+    background-color: $veryLightGreen !important;
+    --Paper-shadow: 0px !important;
+    border-left: $primary 4px solid;
+}
+
+
+.fatura:hover {
+    background-color: $veryLightGreen !important;
+    border-left: $primary 4px solid;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2), 0px 6px 20px rgba(0, 0, 0, 0.19);
+    transition: all 0.3s ease-in-out;
+}

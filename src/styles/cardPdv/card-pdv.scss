@@ -1,0 +1,17 @@
+@import "../_variables";
+
+
+
+.card-pdv{
+    background: $veryLightGreen !important;
+
+    &__status{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.card-pdv:hover{
+    background: $lightGrey !important;
+}
