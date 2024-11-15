@@ -8,17 +8,14 @@ const NavBar = () => {
     const navigate = useNavigate();
     const [closeMenu, setCloseMenu] = useState(false);
 
-    const handleCloseMenu = () => {
-        setCloseMenu(!closeMenu);
-    };
 
     const handleItemClick = (path) => {
         navigate(path);
     };
 
     const handleLogout = () => {
-        console.log("Logout"); // Aqui você pode adicionar a lógica de logout
-        navigate("/login"); // Exemplo de redirecionamento após logout
+        localStorage.removeItem('authToken');
+        navigate("/");
     };
 
 

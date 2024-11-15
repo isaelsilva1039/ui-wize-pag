@@ -28,7 +28,7 @@ const Sidebar = ({ closeMenu, setCloseMenu }) => {
     };
 
     const menuItems = [
-        { path: "/", label: "Contratos", icon: <PiUsersThreeFill size={18} /> },
+        { path: "/contratos", label: "Contratos", icon: <PiUsersThreeFill size={18} /> },
         { path: "/empresa", label: "Empresa", icon: <FaBuilding size={16} /> },
         { path: "/filial", label: "Filial", icon: <FaNetworkWired size={16} /> },
         { path: "/pdvs", label: "PDV’s", icon: <PiMonitorFill size={16} /> },

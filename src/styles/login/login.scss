@@ -1,0 +1,86 @@
+@import "../_variables";
+
+.login-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #d6eaff, #a3d4f7);
+}
+
+.login-paper {
+    display: flex;
+    width: 80%;
+    max-width: 900px;
+    height: 500px;
+    border-radius: 4px;
+    overflow: hidden;
+    flex-direction: row; // Default layout for larger screens
+
+    @media (max-width: 768px) {
+        flex-direction: column; // Stack layout for mobile
+        height: auto;
+        width: 90%;
+    }
+}
+
+.login-left {
+    flex: 1;
+    background: #e8f4ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: 768px) {
+        padding: 2rem;
+        height: 200px; // Adjust height for illustration on mobile
+    }
+}
+
+.login-illustration {
+    width: 70%;
+
+    @media (max-width: 768px) {
+        width: 50%; // Adjust size for mobile
+    }
+}
+
+.login-right {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @media (max-width: 768px) {
+ 
+        padding: 1rem; // Reduce padding for mobile
+    }
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    @media (max-width: 768px) {
+        flex-direction: column; // Stack options for mobile
+        align-items: flex-start;
+        gap: 0.5rem; // Add spacing between elements
+    }
+}
+
+.login-button {
+    background-color: #1976d2;
+    color: white;
+
+    &:hover {
+        background-color: #155a9a !important;
+    }
+}
+
+.signup-link {
+    margin-top: 1rem;
+    text-align: center;
+}

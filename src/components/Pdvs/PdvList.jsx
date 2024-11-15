@@ -23,6 +23,8 @@ import '../../styles/cardPdv/card-pdv.scss'
 import { IoIosCloudDone } from "react-icons/io";
 import { MdContentCopy, MdOutlineDesktopAccessDisabled, MdOutlineHourglassDisabled } from "react-icons/md";
 import { orange } from "@mui/material/colors";
+import { HiOutlineLockOpen } from "react-icons/hi";
+import { TbScreenShare } from "react-icons/tb";
 
 const statusColors = {
     gerado: "yellow",
@@ -81,7 +83,7 @@ const PdvList = () => {
                                 {pdv.status === "ativo" ? (
                                     <Chip icon={<IoIosCloudDone />} label="Ativo" color="success" size="small" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }} />
                                 ) : pdv.status === "liberado" ? (
-                                    <Chip label="Liberado para uso" style={{ backgroundColor: statusColors[pdv.status], color: "white" }} size="small" />
+                                    <Chip icon={<TbScreenShare color="white"/>} label="Liberado para uso" style={{ backgroundColor: statusColors[pdv.status], color: "white" }} size="small" />
                                 ) : pdv.status === "inativo" ? (
                                     <Chip icon={<MdOutlineDesktopAccessDisabled />} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }} label="Inativo" color="error" size="small" />
                                 ) : pdv.status === "expirado" ? (
