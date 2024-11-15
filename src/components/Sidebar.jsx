@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import {
     FaHome,
@@ -14,11 +14,15 @@ import { Tooltip } from "@mui/material";
 import Profile from "../Images/profile.png";
 import { PiMonitorFill, PiUsersThreeFill } from "react-icons/pi";
 import { MdOutlinePayment } from "react-icons/md";
+import { AuthContext } from "../context/AuthContext";
 
 const Sidebar = ({ closeMenu, setCloseMenu }) => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { newUser } = useContext(AuthContext);
 
+
+    console.log(newUser)
     const handleCloseMenu = () => {
         setCloseMenu(!closeMenu);
     };
@@ -69,8 +73,8 @@ const Sidebar = ({ closeMenu, setCloseMenu }) => {
             >
                 <img src={Profile} alt="profile" className="profile" />
                 <div className="profileContents">
-                    <p className="name">Hello, Jóse</p>
-                    <p>johnsmith@gmail.com</p>
+                    <p className="name">{newUser?.name}</p>
+                    <p>{newUser?.username}</p>
                 </div>
             </div>
             <div
