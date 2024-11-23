@@ -204,7 +204,7 @@ const EmpresaTable = ({
                           <Tooltip title="Remover">
                             <IconButton
                               color="error"
-                              onClick={() => onDelete(index)}
+                              onClick={() => onDelete(item)}
                             >
                               <Delete />
                             </IconButton>
