@@ -10,14 +10,14 @@ import {
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
+const NovoClientForm = ({ initialData = {}, onSubmit, onClose }) => {
   const [formData, setFormData] = useState({
     nome: "",
     cnpj: "",
     cpf: "",
     endereco: "",
     pdv: "Mono",
-    ativo_inativo: true,
+    ativoInativo: true,
     telefone: "",
     whatsapp: "",
     email: "",
@@ -33,7 +33,7 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
         cpf: initialData.CPF || "",
         endereco: initialData.Endereco || "",
         pdv: initialData.PDV || "Mono",
-        ativo_inativo: initialData.AtivoInativo ?? true,
+        ativoInativo: initialData.AtivoInativo ?? true,
         telefone: initialData.Telefone || "",
         whatsapp: initialData.Whatsapp || "",
         email: initialData.Email || "",
@@ -46,7 +46,7 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: name === "ativo_inativo" ? value === "true" : value,
+      [name]: name === "ativoInativo" ? value === "true" : value,
     }));
   };
 
@@ -59,7 +59,7 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
       cpf: "",
       endereco: "",
       pdv: "Mono",
-      ativo_inativo: true,
+      ativoInativo: true,
       telefone: "",
       whatsapp: "",
       email: "",
@@ -135,8 +135,8 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
         <Select
           labelId="ativoInativo-label"
           id="ativoInativo-select"
-          name="ativo_inativo"
-          value={formData.ativo_inativo ? "true" : "false"}
+          name="ativoInativo"
+          value={formData.ativoInativo ? "true" : "false"}
           label="Ativo/Inativo"
           onChange={handleChange}
         >
@@ -202,4 +202,4 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
   );
 };
 
-export default ClientForm;
+export default NovoClientForm;
