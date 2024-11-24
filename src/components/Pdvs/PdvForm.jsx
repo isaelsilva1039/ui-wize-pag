@@ -74,7 +74,7 @@ const PdvForm = ({ onSubmit, onClose, token }) => {
         <InputLabel id="filial-label">Filial</InputLabel>
         <Select
           labelId="filial-label"
-          label="Filial"
+          name="filialId"
           value={formData.filialId}
           onChange={handleChange}
           required
@@ -92,7 +92,6 @@ const PdvForm = ({ onSubmit, onClose, token }) => {
         <Select
           labelId="contrato-label"
           name="contratoId"
-          label="Contrato"
           value={formData.contratoId}
           onChange={handleChange}
           required
@@ -110,7 +109,6 @@ const PdvForm = ({ onSubmit, onClose, token }) => {
         <Select
           labelId="token-label"
           name="tokenId"
-            label="Token"
           value={formData.tokenId}
           onChange={handleChange}
           required
