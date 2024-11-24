@@ -67,3 +67,24 @@ export const deleteEmpresa = async (token, id) => {
     throw error;
   }
 };
+
+
+
+// Obtem todas as empresas com paginação
+export const getEmpresasAll = async (token, page = 1, pageSize = 1000) => {
+  try {
+    const response = await axios.get(API_URL, {
+      params: {
+        page: page,
+        page_size: pageSize,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar empresas:", error);
+    throw error;
+  }
+};
