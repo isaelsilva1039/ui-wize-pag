@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
     Tabs,
     Tab,
@@ -25,13 +25,14 @@ import { SlScreenDesktop } from "react-icons/sl";
 import TokenList from "../components/Pdvs/token-lista";
 import { BsCreditCard2BackFill } from "react-icons/bs";
 import PdvForm from "../components/Pdvs/PdvForm";
+import { AuthContext } from "../context/AuthContext";
+import { createPdv } from "../services/pdvService";
 
 const PDVS = () => {
     const [tabIndex, setTabIndex] = useState(0);
     const [open, setOpen] = useState(false);
-    const [filiais, setFiliais] = useState(mockFiliais);
-
-    const [editFilial, setEditFilial] = useState(false);
+    const { token } = useContext(AuthContext);
+    const [update, setUpdate] = useState(false);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -49,10 +50,39 @@ const PDVS = () => {
         setOpen(false);
     };
 
-    const handleFormSubmit = (formData) => {
-        console.log("Novo PDV cadastrado:", formData);
-        setOpen(false);
+    const handleFormSubmit = async (formData) => {
+
+        setUpdate(false)
+        
+        try {
+            const pdvData = {
+                descricao: formData.descricao,
+                status: "Ativo", // Define como ativo por padrão
+                filial_id: formData.filialId,
+                contrato_id: formData.contratoId,
+                token_id: formData.tokenId,
+                data_ativacao_token: formData.dataAtivacaoToken || null,
+                data_expiracao_token: formData.dataExpiracaoToken || null,
+            };
+
+            const response = await createPdv(token, pdvData);
+           
+            setUpdate(true)
+        
+
+            // Fechar modal e mostrar mensagem de sucesso
+            setSnackbarMessage("PDV cadastrado com sucesso!");
+            setSnackbarOpen(true);
+            setOpen(false);
+        } catch (error) {
+            console.error("Erro ao cadastrar PDV:", error);
+            setSnackbarMessage("Erro ao cadastrar PDV. Tente novamente.");
+            setSnackbarOpen(true);
+                       
+            setUpdate(false)
+        }
     };
+
 
     return (
         <div className="container">
@@ -76,47 +106,44 @@ const PDVS = () => {
                             </Button>
                         </Box>
                         <hr></hr>
-                        <PdvList />
+                        <PdvList token={token} update={update}/>
                     </Box>
                 )}
-                  {tabIndex === 1 && (
+                {tabIndex === 1 && (
                     <Box sx={{ mt: 3 }}>
                         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                             <Typography variant="h6" gutterBottom></Typography>
                             <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={() => {}}
+                                onClick={() => { }}
                                 startIcon={<BsCreditCard2BackFill />}
                             >
                                 Comprar token
                             </Button>
                         </Box>
                         <hr></hr>
-                        <TokenList />
+                        <TokenList token={token} />
                     </Box>
                 )}
             </Box>
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
                 <DialogTitle > Cadastrar Novo PDV</DialogTitle>
                 <DialogContent>
-                    <PdvForm onSubmit={handleFormSubmit} onClose={handleClose} />
+                    <PdvForm token={token} onSubmit={handleFormSubmit} onClose={handleClose} />
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} className="container__cancelar">
-                        Cancelar
-                    </Button>
-                    <Button
-                        className="container__btn-salvar"
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        endIcon={<FaCheckCircle size={18} color="white" />}
-                    >
-                        Cadastrar
-                    </Button>
-                </DialogActions>
             </Dialog>
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={() => setSnackbarOpen(false)}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <Alert onClose={() => setSnackbarOpen(false)} severity="success" sx={{ width: "100%" }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
 
         </div>
     );

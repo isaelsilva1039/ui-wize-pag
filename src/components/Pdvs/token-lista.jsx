@@ -1,15 +1,15 @@
-// src/components/TokenList.jsx
-
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Card,
   CardContent,
   Typography,
   Box,
   Chip,
+  CircularProgress,
 } from "@mui/material";
-import mockTokens from "../../mocks/tokeks";
-import '../../styles/cardPdv/card-pdv.scss'
+import '../../styles/cardPdv/card-pdv.scss';
+import { AuthContext } from "../../context/AuthContext"; // Para obter o token do usuário
+import { getTokens } from "../../services/tokens";
 
 const statusColors = {
   gerado: "orange",
@@ -19,6 +19,34 @@ const statusColors = {
 };
 
 const TokenList = () => {
+  const { token } = useContext(AuthContext); // Obtém o token de autenticação
+  const [tokens, setTokens] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTokens = async () => {
+      try {
+        setLoading(true);
+        const response = await getTokens(token); // Chama o serviço para buscar os tokens
+        setTokens(response.data); // Supondo que os tokens estão na propriedade `data`
+      } catch (error) {
+        console.error("Erro ao buscar tokens:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTokens();
+  }, [token]);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -28,7 +56,7 @@ const TokenList = () => {
         p: 2,
       }}
     >
-      {mockTokens.map((token) => (
+      {tokens.map((token) => (
         <Card
           className="card-pdv"
           key={token.id}
@@ -63,11 +91,7 @@ const TokenList = () => {
             )}
 
             <Typography variant="body2" color="textSecondary">
-              Hash: {"***********************"}
-            </Typography>
-
-            <Typography variant="body2" color="textSecondary">
-              Criado por: {token.userCriacao}
+              Criado por: {token.user.name}
             </Typography>
           </CardContent>
         </Card>

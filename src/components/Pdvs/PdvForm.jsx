@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -7,70 +7,58 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  FormControlLabel,
-  Checkbox,
-  Typography,
 } from "@mui/material";
-import mockEmpresas from "../../mocks/empresa";
-import mockTokens from "../../mocks/tokeks";
+import { getFiliais } from "../../services/filialService";
+import { getContratos } from "../../services/contratoService";
+import { getTokens } from "../../services/tokens";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-const PdvForm = ({ onSubmit, onClose }) => {
+const PdvForm = ({ onSubmit, onClose, token }) => {
   const [formData, setFormData] = useState({
-    id: "",
     descricao: "",
-    cnpj: "",
-    inscricaoEstadual: "",
-    razaoSocial: "",
-    nomeFantasia: "",
-    endereco: "",
-    idEmpresa: "", // Armazena o ID da empresa selecionada
-    tokenId: "", // ID do token selecionado
-    dataCriacao: new Date().toISOString().split("T")[0],
-    userCriacao: "", // Popule com o usuário atual
-    contribuinte: false,
+    filialId: "",
+    contratoId: "",
+    tokenId: "",
   });
 
+  const [filiais, setFiliais] = useState([]);
+  const [contratos, setContratos] = useState([]);
+  const [tokens, setTokens] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const filiaisData = await getFiliais(token);
+        setFiliais(filiaisData.data);
+
+        const contratosData = await getContratos(token, 1 , 100);
+        setContratos(contratosData.data);
+
+        const tokensData = await getTokens(token);
+        setTokens(tokensData.data);
+      } catch (error) {
+        console.error("Erro ao carregar dados:", error);
+      }
+    };
+
+    fetchData();
+  }, [token]);
+
   const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
+    const { name, value } = event.target;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: type === "checkbox" ? checked : value, // Gerencia mudanças para checkboxes e inputs comuns
+      [name]: value,
     }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!formData.tokenId) {
-      alert("Por favor, selecione um token antes de cadastrar o PDV.");
-      return;
-    }
     onSubmit(formData);
-    setFormData({
-      id: "",
-      descricao: "",
-      cnpj: "",
-      inscricaoEstadual: "",
-      razaoSocial: "",
-      nomeFantasia: "",
-      endereco: "",
-      idEmpresa: "",
-      tokenId: "",
-      dataCriacao: new Date().toISOString().split("T")[0],
-      userCriacao: "",
-      contribuinte: false,
-    });
   };
 
   return (
-    <Box
-      component="form"
-      sx={{ mt: 2 }}
-      noValidate
-      autoComplete="off"
-      onSubmit={handleSubmit}
-    >
-
-
+    <Box component="form" onSubmit={handleSubmit}>
       <TextField
         size="small"
         fullWidth
@@ -82,43 +70,77 @@ const PdvForm = ({ onSubmit, onClose }) => {
         required
       />
 
-      <FormControl fullWidth size="small" margin="normal">
-        <InputLabel id="empresa-label">Empresa</InputLabel>
+      <FormControl fullWidth margin="normal" size="small">
+        <InputLabel id="filial-label">Filial</InputLabel>
         <Select
-          labelId="empresa-label"
-          id="empresa-select"
-          name="idEmpresa"
-          value={formData.idEmpresa}
+          labelId="filial-label"
+          label="Filial"
+          value={formData.filialId}
           onChange={handleChange}
           required
         >
-          {mockEmpresas.map((empresa) => (
-            <MenuItem key={empresa.id} value={empresa.id}>
-              {empresa.nomeFantasia}
+          {filiais.map((filial) => (
+            <MenuItem key={filial.id} value={filial.id}>
+              {filial.nome_fantasia}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
-      <FormControl fullWidth size="small" margin="normal">
+
+      <FormControl fullWidth margin="normal" size="small">
+        <InputLabel id="contrato-label">Contrato</InputLabel>
+        <Select
+          labelId="contrato-label"
+          name="contratoId"
+          label="Contrato"
+          value={formData.contratoId}
+          onChange={handleChange}
+          required
+        >
+          {contratos.map((contrato) => (
+            <MenuItem key={contrato.ID} value={contrato.ID}>
+              {contrato.Nome}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <FormControl fullWidth margin="normal" size="small">
         <InputLabel id="token-label">Token</InputLabel>
         <Select
           labelId="token-label"
-          id="token-select"
           name="tokenId"
+            label="Token"
           value={formData.tokenId}
           onChange={handleChange}
           required
         >
-          {mockTokens
-            .filter((token) => token.status === "liberado")
-            .map((token) => (
-              <MenuItem key={token.id} value={token.id}>
-                {token.descricao}
-              </MenuItem>
-            ))}
+          {tokens.map((token) => (
+            <MenuItem key={token.id} value={token.id}>
+              {token.descricao}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
-      
+
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+        <Button
+          variant="text"
+          color="inherit"
+          sx={{ mr: 1 }}
+          onClick={onClose}
+        >
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          variant="contained"
+          className="container__btn-salvar"
+          endIcon={<CheckCircleIcon />}
+        >
+          Salvar
+        </Button>
+      </Box>
     </Box>
   );
 };

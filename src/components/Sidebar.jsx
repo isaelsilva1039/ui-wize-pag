@@ -37,7 +37,7 @@ const Sidebar = ({ closeMenu, setCloseMenu }) => {
         { path: "/filial", label: "Filial", icon: <FaNetworkWired size={16} /> },
         { path: "/pdvs", label: "PDV’s", icon: <PiMonitorFill size={16} /> },
         { path: "/faturas", label: "Minhas faturas", icon: <MdOutlinePayment size={16} /> },
-        { path: "/support", label: "Suporte", icon: <FaLifeRing size={16} /> },
+        // { path: "/support", label: "Suporte", icon: <FaLifeRing size={16} /> },
     ];
 
     return (

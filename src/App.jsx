@@ -37,7 +37,7 @@ function App() {
                       <Route path="/empresa" element={<Empresa />} />
                       <Route path="/filial" element={<Filial />} />
                       <Route path="/pdvs" element={<PDVS />} />
-                      <Route path="/support" element={<Support />} />
+                      {/* <Route path="/support" element={<Support />} /> */}
                       <Route path="/faturas" element={<Transactions />} />
                     </Routes>
                   </div>
