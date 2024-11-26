@@ -1,9 +1,8 @@
 #Stage 1
 FROM node:18-alpine as builder
 WORKDIR /app
-COPY package*.json .
+COPY package.json .
 COPY yarn*.lock .
-# RUN npm install -g yarn@4.5.0
 RUN yarn install
 COPY . .
 RUN yarn build
