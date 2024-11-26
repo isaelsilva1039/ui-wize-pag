@@ -1,11 +1,17 @@
-# Build dependencies
-FROM node:23-alpine as dependencies
+#Stage 1
+FROM node:18-alpine as builder
 WORKDIR /app
-COPY package.json .
-RUN npm i
-COPY . . 
-# Build production image
-FROM dependencies as builder
-RUN npm run build
-EXPOSE 3000
-CMD npm run build
+COPY package*.json .
+COPY yarn*.lock .
+# RUN npm install -g yarn@4.5.0
+RUN yarn install
+COPY . .
+RUN yarn build
+
+#Stage 2
+FROM nginx:1.19.0
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+COPY --from=builder /app/build .
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
