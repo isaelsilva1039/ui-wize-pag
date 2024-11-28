@@ -28,7 +28,7 @@ import PdvForm from "../components/Pdvs/PdvForm";
 import { AuthContext } from "../context/AuthContext";
 import { createPdv } from "../services/pdvService";
 
-const PDVS = () => {
+const Tokens = () => {
     const [tabIndex, setTabIndex] = useState(0);
     const [open, setOpen] = useState(false);
     const { token } = useContext(AuthContext);
@@ -149,4 +149,4 @@ const PDVS = () => {
     );
 };
 
-export default PDVS;
+export default Tokens;

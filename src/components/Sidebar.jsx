@@ -8,7 +8,8 @@ import {
     FaCog,
     FaLifeRing,
     FaNetworkWired,
-    FaBuilding
+    FaBuilding,
+    FaUser
 } from "react-icons/fa";
 import { Tooltip } from "@mui/material";
 import Profile from "../Images/profile.png";
@@ -35,8 +36,9 @@ const Sidebar = ({ closeMenu, setCloseMenu }) => {
         { path: "/contratos", label: "Contratos", icon: <PiUsersThreeFill size={18} /> },
         { path: "/empresa", label: "Empresa", icon: <FaBuilding size={16} /> },
         { path: "/filial", label: "Filial", icon: <FaNetworkWired size={16} /> },
-        { path: "/pdvs", label: "PDV’s", icon: <PiMonitorFill size={16} /> },
+        { path: "/tokens", label: "Tokens", icon: <PiMonitorFill size={16} /> },
         { path: "/faturas", label: "Minhas faturas", icon: <MdOutlinePayment size={16} /> },
+        // { path: "/usuarios", label: "Usuarios", icon: <FaUser size={16} /> },
         // { path: "/support", label: "Suporte", icon: <FaLifeRing size={16} /> },
     ];
 

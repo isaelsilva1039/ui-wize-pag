@@ -9,6 +9,7 @@ import {
   FormControl,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import MaskedInput from "react-text-mask";
 
 const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
   const [formData, setFormData] = useState({
@@ -23,6 +24,8 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
     email: "",
     responsavel: "",
   });
+
+  const [errors, setErrors] = useState({});
 
   // Atualiza apenas uma vez, quando `initialData` mudar
   useEffect(() => {
@@ -50,21 +53,37 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
     }));
   };
 
+  const handleValidation = () => {
+    const newErrors = {};
+    if (!formData.nome) newErrors.nome = "Campo obrigatório.";
+    if (!formData.cnpj) newErrors.cnpj = "Campo obrigatório.";
+    if (!formData.cpf) newErrors.cpf = "Campo obrigatório.";
+    if (!formData.endereco) newErrors.endereco = "Campo obrigatório.";
+    if (!formData.telefone) newErrors.telefone = "Campo obrigatório.";
+    if (!formData.email) newErrors.email = "Campo obrigatório.";
+    if (!formData.responsavel) newErrors.responsavel = "Campo obrigatório.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(formData);
-    setFormData({
-      nome: "",
-      cnpj: "",
-      cpf: "",
-      endereco: "",
-      pdv: "Mono",
-      ativo_inativo: true,
-      telefone: "",
-      whatsapp: "",
-      email: "",
-      responsavel: "",
-    });
+    if (handleValidation()) {
+      onSubmit(formData);
+      setFormData({
+        nome: "",
+        cnpj: "",
+        cpf: "",
+        endereco: "",
+        pdv: "Mono",
+        ativo_inativo: true,
+        telefone: "",
+        whatsapp: "",
+        email: "",
+        responsavel: "",
+      });
+    }
   };
 
   return (
@@ -83,27 +102,66 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
         name="nome"
         value={formData.nome}
         onChange={handleChange}
+        error={!!errors.nome}
+        helperText={errors.nome}
         required
       />
-      <TextField
-        size="small"
-        fullWidth
-        label="CNPJ"
-        margin="normal"
-        name="cnpj"
-        value={formData.cnpj}
-        onChange={handleChange}
-        required
+      <MaskedInput
+        mask={[
+          /\d/,
+          /\d/,
+          ".",
+          /\d/,
+          /\d/,
+          /\d/,
+          ".",
+          /\d/,
+          /\d/,
+          /\d/,
+          "/",
+          /\d/,
+          /\d/,
+          /\d/,
+          /\d/,
+          "-",
+          /\d/,
+          /\d/,
+        ]}
+        render={(ref, props) => (
+          <TextField
+            {...props}
+            inputRef={ref}
+            size="small"
+            fullWidth
+            label="CNPJ"
+            margin="normal"
+            name="cnpj"
+            value={formData.cnpj}
+            onChange={handleChange}
+            error={!!errors.cnpj}
+            helperText={errors.cnpj}
+            required
+          />
+        )}
       />
-      <TextField
-        size="small"
-        fullWidth
-        label="CPF"
-        margin="normal"
-        name="cpf"
-        value={formData.cpf}
-        onChange={handleChange}
-        required
+      <MaskedInput
+        mask={[/\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "-", /\d/, /\d/]}
+        render={(ref, props) => (
+          <TextField
+            {...props}
+            inputRef={ref}
+            size="small"
+            fullWidth
+            label="CPF"
+            margin="normal"
+            name="cpf"
+            value={formData.cpf}
+            onChange={handleChange}
+            error={!!errors.cpf}
+            helperText={errors.cpf}
+            required
+          />
+        )}
       />
       <TextField
         size="small"
@@ -113,6 +171,8 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
         name="endereco"
         value={formData.endereco}
         onChange={handleChange}
+        error={!!errors.endereco}
+        helperText={errors.endereco}
         required
       />
       <FormControl fullWidth size="small" margin="normal">
@@ -153,6 +213,8 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
         name="telefone"
         value={formData.telefone}
         onChange={handleChange}
+        error={!!errors.telefone}
+        helperText={errors.telefone}
         required
       />
       <TextField
@@ -172,6 +234,8 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
         name="email"
         value={formData.email}
         onChange={handleChange}
+        error={!!errors.email}
+        helperText={errors.email}
         type="email"
         required
       />
@@ -183,6 +247,8 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
         name="responsavel"
         value={formData.responsavel}
         onChange={handleChange}
+        error={!!errors.responsavel}
+        helperText={errors.responsavel}
         required
       />
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>

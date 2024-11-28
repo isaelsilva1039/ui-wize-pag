@@ -8,8 +8,10 @@ import Contratos from './pages/Contratos';
 import NavBar from './components/NavBar';
 import Empresa from './pages/Empresa';
 import Filial from './pages/Filial';
-import PDVS from './pages/PDVS';
 import Login from './pages/login';
+import Tokens from './pages/Tokens';
+import Usuarios from './pages/Usuarios';
+
 
 const PrivateRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
@@ -36,9 +38,10 @@ function App() {
                       <Route path="/contratos" element={<Contratos />} />
                       <Route path="/empresa" element={<Empresa />} />
                       <Route path="/filial" element={<Filial />} />
-                      <Route path="/pdvs" element={<PDVS />} />
+                      <Route path="/tokens" element={<Tokens />} />
                       {/* <Route path="/support" element={<Support />} /> */}
                       <Route path="/faturas" element={<Transactions />} />
+                      <Route path="/usuarios" element={<Usuarios />} />
                     </Routes>
                   </div>
                 </div>
