@@ -10,8 +10,15 @@ import {
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MaskedInput from "react-text-mask";
+import { useSnackbar } from "notistack";
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+  const { mask, ...other } = props;
+  return <MaskedInput {...other} ref={ref} mask={mask} />;
+});
 
 const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
+  const { enqueueSnackbar } = useSnackbar(); // Hook do notistack
   const [formData, setFormData] = useState({
     nome: "",
     cnpj: "",
@@ -27,7 +34,6 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
 
   const [errors, setErrors] = useState({});
 
-  // Atualiza apenas uma vez, quando `initialData` mudar
   useEffect(() => {
     if (Object.keys(initialData).length > 0) {
       setFormData({
@@ -67,22 +73,28 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (handleValidation()) {
-      onSubmit(formData);
-      setFormData({
-        nome: "",
-        cnpj: "",
-        cpf: "",
-        endereco: "",
-        pdv: "Mono",
-        ativo_inativo: true,
-        telefone: "",
-        whatsapp: "",
-        email: "",
-        responsavel: "",
-      });
+      try {
+        await onSubmit(formData); // Aguarda a resposta da API
+        enqueueSnackbar("Salvo com sucesso!", { variant: "success" }); // Notificação de sucesso
+        setFormData({
+          nome: "",
+          cnpj: "",
+          cpf: "",
+          endereco: "",
+          pdv: "Mono",
+          ativo_inativo: true,
+          telefone: "",
+          whatsapp: "",
+          email: "",
+          responsavel: "",
+        });
+      } catch (error) {
+        // Exibe uma notificação de erro
+        enqueueSnackbar("Erro ao salvar. Tente novamente.", { variant: "error" });
+      }
     }
   };
 
@@ -106,62 +118,37 @@ const ClientForm = ({ initialData = {}, onSubmit, onClose }) => {
         helperText={errors.nome}
         required
       />
-      <MaskedInput
-        mask={[
-          /\d/,
-          /\d/,
-          ".",
-          /\d/,
-          /\d/,
-          /\d/,
-          ".",
-          /\d/,
-          /\d/,
-          /\d/,
-          "/",
-          /\d/,
-          /\d/,
-          /\d/,
-          /\d/,
-          "-",
-          /\d/,
-          /\d/,
-        ]}
-        render={(ref, props) => (
-          <TextField
-            {...props}
-            inputRef={ref}
-            size="small"
-            fullWidth
-            label="CNPJ"
-            margin="normal"
-            name="cnpj"
-            value={formData.cnpj}
-            onChange={handleChange}
-            error={!!errors.cnpj}
-            helperText={errors.cnpj}
-            required
-          />
-        )}
+      <TextField
+        size="small"
+        fullWidth
+        label="CNPJ"
+        margin="normal"
+        name="cnpj"
+        value={formData.cnpj}
+        onChange={handleChange}
+        InputProps={{
+          inputComponent: TextMaskCustom,
+          inputProps: { mask: [/\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/] },
+        }}
+        error={!!errors.cnpj}
+        helperText={errors.cnpj}
+        required
       />
-      <MaskedInput
-        mask={[/\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "-", /\d/, /\d/]}
-        render={(ref, props) => (
-          <TextField
-            {...props}
-            inputRef={ref}
-            size="small"
-            fullWidth
-            label="CPF"
-            margin="normal"
-            name="cpf"
-            value={formData.cpf}
-            onChange={handleChange}
-            error={!!errors.cpf}
-            helperText={errors.cpf}
-            required
-          />
-        )}
+      <TextField
+        size="small"
+        fullWidth
+        label="CPF"
+        margin="normal"
+        name="cpf"
+        value={formData.cpf}
+        onChange={handleChange}
+        InputProps={{
+          inputComponent: TextMaskCustom,
+          inputProps: { mask: [/\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "-", /\d/, /\d/] },
+        }}
+        error={!!errors.cpf}
+        helperText={errors.cpf}
+        required
       />
       <TextField
         size="small"
