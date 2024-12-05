@@ -12,13 +12,12 @@ import {
     Alert,
     CircularProgress,
 } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // Importação do ícone do MUI
 import "../styles/contatos/contratos.scss";
 import { FaUser } from "react-icons/fa";
 
 import EmpresaTable from "../components/Empresa/EmpresaTable";
 import EmpresaForm from "../components/Empresa/EmpresaForm";
-import { getEmpresas, createEmpresa, updateEmpresa, deleteEmpresa } from "../services/empresaService"; // Assumindo que esses serviços existem.
+import { getEmpresas, createEmpresa, updateEmpresa, deleteEmpresa } from "../services/empresaService";
 import { AuthContext } from "../context/AuthContext";
 
 const Empresa = () => {
@@ -28,11 +27,10 @@ const Empresa = () => {
     const [open, setOpen] = useState(false);
     const [empresas, setEmpresas] = useState([]);
     const [editEmpresa, setEditEmpresa] = useState(false);
-    const [loading, setLoading] = useState(false); // Estado para o spinner
+    const [loading, setLoading] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
 
-    // Estados de paginação
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize] = useState(8);
     const [totalPages, setTotalPages] = useState(1);
@@ -50,7 +48,7 @@ const Empresa = () => {
     };
 
     const fetchEmpresas = async (page = 1) => {
-        setLoading(true); // Ativa o spinner
+        setLoading(true); 
         try {
             const response = await getEmpresas(token, page, pageSize);
             setEmpresas(response.data);
@@ -59,56 +57,56 @@ const Empresa = () => {
         } catch (error) {
             console.error("Erro ao carregar empresas:", error);
         } finally {
-            setLoading(false); // Desativa o spinner
+            setLoading(false);
         }
     };
 
     const addEmpresa = async (novaEmpresa) => {
-        setLoading(true); // Ativa o spinner
+        setLoading(true); 
         try {
             await createEmpresa(token, novaEmpresa);
             setSnackbarMessage("Empresa cadastrada com sucesso!");
             setSnackbarOpen(true);
             setOpen(false);
-            fetchEmpresas(currentPage); // Atualiza os dados
+            fetchEmpresas(currentPage); 
         } catch (error) {
             console.error("Erro ao criar empresa:", error);
             setSnackbarMessage("Erro ao cadastrar empresa. Tente novamente.");
             setSnackbarOpen(true);
         } finally {
-            setLoading(false); // Desativa o spinner
+            setLoading(false);
         }
     };
 
     const handleUpdateEmpresa = async (id, updatedEmpresa) => {
-        setLoading(true); // Ativa o spinner
+        setLoading(true);
         try {
             await updateEmpresa(token, id, updatedEmpresa);
             setSnackbarMessage("Empresa atualizada com sucesso!");
             setSnackbarOpen(true);
-            fetchEmpresas(currentPage); // Atualiza os dados
+            fetchEmpresas(currentPage);
         } catch (error) {
             console.error("Erro ao atualizar empresa:", error);
             setSnackbarMessage("Erro ao atualizar empresa. Tente novamente.");
             setSnackbarOpen(true);
         } finally {
-            setLoading(false); // Desativa o spinner
+            setLoading(false); 
         }
     };
 
     const handleDeleteEmpresa = async (id) => {
-        setLoading(true); // Ativa o spinner
+        setLoading(true); 
         try {
             await deleteEmpresa(token, id);
             setSnackbarMessage("Empresa removida com sucesso!");
             setSnackbarOpen(true);
-            fetchEmpresas(currentPage); // Atualiza os dados
+            fetchEmpresas(currentPage);
         } catch (error) {
             console.error("Erro ao excluir empresa:", error);
             setSnackbarMessage("Erro ao excluir empresa. Tente novamente.");
             setSnackbarOpen(true);
         } finally {
-            setLoading(false); // Desativa o spinner
+            setLoading(false);
         }
     };
 
@@ -130,11 +128,11 @@ const Empresa = () => {
         { id: "razao_social", label: "Razão Social", visible: true },
         { id: "nome_fantasia", label: "Nome Fantasia", visible: true },
         { id: "endereco", label: "Endereço", visible: true },
-        { id: "actions", label: "Ações", visible: true }, // Coluna para ações
+        { id: "actions", label: "Ações", visible: true },
     ];
 
     useEffect(() => {
-        fetchEmpresas(); // Carrega os dados na montagem do componente
+        fetchEmpresas(); 
     }, []);
 
     return (
@@ -144,7 +142,7 @@ const Empresa = () => {
                     <Tab label="Empresas" />
                 </Tabs>
 
-                {loading ? ( // Mostra o spinner enquanto carrega os dados
+                {loading ? (
                     <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
                         <CircularProgress />
                     </Box>
@@ -166,7 +164,7 @@ const Empresa = () => {
                                 columns={empresaColumns}
                                 data={empresas}
                                 onEdit={(item) => setEditEmpresa(item)}
-                                onDelete={(empresa) => handleDeleteEmpresa(empresa.id)} // Certifique-se de passar o ID correto
+                                onDelete={(empresa) => handleDeleteEmpresa(empresa.id)}
                             />
                             <Box
                                 sx={{

@@ -39,14 +39,14 @@ const FilialTable = ({
     if (saved) {
       return JSON.parse(saved);
     } else {
-
       const initialVisibility = {};
       columns.forEach((col) => {
-        initialVisibility[col.id] = col.visible !== undefined ? col.visible : true;
+        initialVisibility[col.id] = true; // Todas as colunas marcadas como visíveis por padrão
       });
       return initialVisibility;
     }
   });
+  
 
   const [anchorEl, setAnchorEl] = useState(null);
 
