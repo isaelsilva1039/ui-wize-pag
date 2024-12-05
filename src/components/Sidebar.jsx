@@ -111,13 +111,13 @@ const Sidebar = ({ closeMenu, setCloseMenu }) => {
                             onClick={() => handleItemClick(item.path)}
                         >
                             <Tooltip
-                                title={!closeMenu ? "" : item.label} // Mostra o tooltip somente se o menu estiver fechado
+                                title={!closeMenu ? "" : item.label}
                                 placement="right"
                                 arrow
                             >
                                 <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                     {item.icon}
-                                    {!closeMenu && <span>{item.label}</span>} {/* Mostra o nome somente se o menu estiver aberto */}
+                                    {!closeMenu && <span>{item.label}</span>}
                                 </span>
                             </Tooltip>
                         </li>
