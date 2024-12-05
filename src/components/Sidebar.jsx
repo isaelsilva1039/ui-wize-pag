@@ -11,7 +11,7 @@ import {
     FaBuilding,
     FaUser
 } from "react-icons/fa";
-import { Tooltip } from "@mui/material";
+import { Avatar, Box, Tooltip } from "@mui/material";
 import Profile from "../Images/profile.png";
 import { PiMonitorFill, PiUsersThreeFill } from "react-icons/pi";
 import { MdOutlinePayment } from "react-icons/md";
@@ -48,7 +48,15 @@ const Sidebar = ({ closeMenu, setCloseMenu }) => {
                 className={closeMenu ? "logoContainer active" : "logoContainer"}
                 onClick={handleCloseMenu}
             >
-                <FaNetworkWired size={closeMenu ? "40px" : "30px"} />
+             
+                <Box
+                        component="img"
+                        src="./image.png"
+                        alt="Illustration"
+                        style={{ width : closeMenu ? "40px" : "30px"  }}
+                        // className="login-illustration"
+                    />
+
                 <h2 className="title">Work</h2>
             </div>
             <div
@@ -73,12 +81,21 @@ const Sidebar = ({ closeMenu, setCloseMenu }) => {
                         : "profileContainer"
                 }
             >
-                <img src={Profile} alt="profile" className="profile" />
+                {newUser?.name ? (
+                    <Avatar sx={{ bgcolor: "#3f51b5", width: 56, height: 56 }}>
+                        {newUser.name[0]?.toUpperCase()}    
+                    </Avatar>
+                ) : (
+                    <Avatar sx={{ bgcolor: "#3f51b5", width: 56, height: 56 }}>
+                        ?
+                    </Avatar>
+                )}
                 <div className="profileContents">
                     <p className="name">{newUser?.name}</p>
                     <p>{newUser?.username}</p>
                 </div>
             </div>
+
             <div
                 className={
                     closeMenu
