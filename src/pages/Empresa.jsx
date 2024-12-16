@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
     Tabs,
     Tab,
@@ -19,6 +21,7 @@ import EmpresaTable from "../components/Empresa/EmpresaTable";
 import EmpresaForm from "../components/Empresa/EmpresaForm";
 import { getEmpresas, createEmpresa, updateEmpresa, deleteEmpresa } from "../services/empresaService";
 import { AuthContext } from "../context/AuthContext";
+import { toast } from "react-toastify"; // Import do toast
 
 const Empresa = () => {
     const { token } = useContext(AuthContext);
@@ -65,14 +68,13 @@ const Empresa = () => {
         setLoading(true); 
         try {
             await createEmpresa(token, novaEmpresa);
-            setSnackbarMessage("Empresa cadastrada com sucesso!");
+            toast.success("Empresa cadastrada com sucesso!");
             setSnackbarOpen(true);
             setOpen(false);
             fetchEmpresas(currentPage); 
         } catch (error) {
-            console.error("Erro ao criar empresa:", error);
-            setSnackbarMessage("Erro ao cadastrar empresa. Tente novamente.");
-            setSnackbarOpen(true);
+            console.error("Erro ao criar empresa:", error?.response?.data?.error);
+            toast.error(error?.response?.data?.error);
         } finally {
             setLoading(false);
         }
@@ -82,28 +84,26 @@ const Empresa = () => {
         setLoading(true);
         try {
             await updateEmpresa(token, id, updatedEmpresa);
-            setSnackbarMessage("Empresa atualizada com sucesso!");
-            setSnackbarOpen(true);
+            toast.success("Empresa atualizada com sucesso!");
             fetchEmpresas(currentPage);
         } catch (error) {
             console.error("Erro ao atualizar empresa:", error);
-            setSnackbarMessage("Erro ao atualizar empresa. Tente novamente.");
-            setSnackbarOpen(true);
+            toast.error("Erro ao atualizar empresa. Tente novamente.");
         } finally {
             setLoading(false); 
         }
     };
 
-    const handleDeleteEmpresa = async (id) => {
+    const handleDeleteEmpresa = async (empresa) => {
         setLoading(true); 
         try {
-            await deleteEmpresa(token, id);
-            setSnackbarMessage("Empresa removida com sucesso!");
-            setSnackbarOpen(true);
+            await deleteEmpresa(token, empresa?.id , empresa?.deleted_at);
+            toast.success("Empresa removida com sucesso!");
             fetchEmpresas(currentPage);
         } catch (error) {
             console.error("Erro ao excluir empresa:", error);
             setSnackbarMessage("Erro ao excluir empresa. Tente novamente.");
+            toast.error("Erro ao excluir empresa. Tente novamente.");
             setSnackbarOpen(true);
         } finally {
             setLoading(false);
@@ -128,6 +128,7 @@ const Empresa = () => {
         { id: "razao_social", label: "Razão Social", visible: true },
         { id: "nome_fantasia", label: "Nome Fantasia", visible: true },
         { id: "endereco", label: "Endereço", visible: true },
+        { id: "cnpj", label: "CNPJ", visible: true },
         { id: "actions", label: "Ações", visible: true },
     ];
 
@@ -135,8 +136,12 @@ const Empresa = () => {
         fetchEmpresas(); 
     }, []);
 
+    
+
     return (
         <div className="container">
+            <ToastContainer />
+
             <Box sx={{ width: "100%", p: 3 }}>
                 <Tabs value={tabIndex} onChange={handleTabChange}>
                     <Tab label="Empresas" />
@@ -164,7 +169,7 @@ const Empresa = () => {
                                 columns={empresaColumns}
                                 data={empresas}
                                 onEdit={(item) => setEditEmpresa(item)}
-                                onDelete={(empresa) => handleDeleteEmpresa(empresa.id)}
+                                onDelete={(empresa) => handleDeleteEmpresa(empresa)}
                             />
                             <Box
                                 sx={{

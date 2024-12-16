@@ -54,9 +54,16 @@ export const updateEmpresa = async (token, id, empresaData) => {
 };
 
 // Exclui uma empresa
-export const deleteEmpresa = async (token, id) => {
+export const deleteEmpresa = async (token, id, deleted_at) => {
   try {
-    const response = await axios.delete(`${API_URL}/${id}`, {
+
+    let deleted = true;
+    if(deleted_at !== null){
+      /** Ativar */
+      deleted = false;
+    }
+
+    const response = await axios.delete(`${API_URL}/${id}?deleted_at=${deleted}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

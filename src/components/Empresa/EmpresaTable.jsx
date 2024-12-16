@@ -22,7 +22,7 @@ import {
   Box,
 
 } from "@mui/material";
-import { Settings, Edit, Delete } from "@mui/icons-material";
+import { Settings, Edit, Delete, Restore } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import '../../styles/tabela/style.scss'
 
@@ -190,27 +190,27 @@ const EmpresaTable = ({
                   if (column.id === "actions") {
                     return (
                       <TableCell key={column.id}>
-                        {onEdit && (
-                          <Tooltip title="Editar">
-                            <IconButton
-                              color="primary"
-                              onClick={() => onEdit(item, index)}
-                            >
-                              <Edit />
-                            </IconButton>
-                          </Tooltip>
-                        )}
-                        {onDelete && (
-                          <Tooltip title="Remover">
-                            <IconButton
-                              color="error"
-                              onClick={() => onDelete(item)}
-                            >
-                              <Delete />
-                            </IconButton>
-                          </Tooltip>
-                        )}
-                      </TableCell>
+                      {onEdit && (
+                        <Tooltip title="Editar">
+                          <IconButton
+                            color="primary"
+                            onClick={() => onEdit(item, index)}
+                          >
+                            <Edit />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                      {onDelete && (
+                        <Tooltip title={item.deleted_at ? "Reativar" : "Desativar"}>
+                          <IconButton
+                            color={item.deleted_at ? "success" : "error"}
+                            onClick={() => onDelete(item)}
+                          >
+                            {item.deleted_at ? <Restore color="disabled"  /> : <Delete />}
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                    </TableCell>
                     );
                   }
                   return (

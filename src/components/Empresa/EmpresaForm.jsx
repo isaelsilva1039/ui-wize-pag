@@ -4,6 +4,7 @@ import {
   TextField,
   Button,
 } from "@mui/material";
+import InputMask from "react-input-mask";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const EmpresaForm = ({ onSubmit, onClose, initialData = {} }) => {
@@ -12,9 +13,9 @@ const EmpresaForm = ({ onSubmit, onClose, initialData = {} }) => {
     razao_social: "",
     nome_fantasia: "",
     endereco: "",
+    cnpj: "",
   });
 
-  // Atualiza o estado apenas se initialData mudar e for relevante (edição)
   useEffect(() => {
     if (Object.keys(initialData).length > 0) {
       setFormData({
@@ -22,6 +23,7 @@ const EmpresaForm = ({ onSubmit, onClose, initialData = {} }) => {
         razao_social: initialData.razao_social || "",
         nome_fantasia: initialData.nome_fantasia || "",
         endereco: initialData.endereco || "",
+        cnpj: initialData.cnpj || "",
       });
     }
   }, [initialData]);
@@ -36,15 +38,22 @@ const EmpresaForm = ({ onSubmit, onClose, initialData = {} }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!formData.cnpj) {
+      alert("CNPJ é obrigatório!");
+      return;
+    }
+
     onSubmit(formData);
 
-    // Limpa os campos apenas na criação
+  
     if (Object.keys(initialData).length === 0) {
       setFormData({
         descricao: "",
         razao_social: "",
         nome_fantasia: "",
         endereco: "",
+        cnpj: "",
       });
     }
   };
@@ -57,6 +66,22 @@ const EmpresaForm = ({ onSubmit, onClose, initialData = {} }) => {
       autoComplete="off"
       onSubmit={handleSubmit}
     >
+            <InputMask
+        mask="99.999.999/9999-99"
+        value={formData.cnpj}
+        onChange={(e) => handleChange(e)}
+      >
+        {() => (
+          <TextField
+            size="small"
+            fullWidth
+            label="CNPJ"
+            margin="normal"
+            name="cnpj"
+            required
+          />
+        )}
+      </InputMask>
       <TextField
         size="small"
         fullWidth
@@ -96,8 +121,8 @@ const EmpresaForm = ({ onSubmit, onClose, initialData = {} }) => {
         value={formData.endereco}
         onChange={handleChange}
         required
+        
       />
-
 
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
         <Button
@@ -108,7 +133,12 @@ const EmpresaForm = ({ onSubmit, onClose, initialData = {} }) => {
         >
           Cancelar
         </Button>
-        <Button type="submit" variant="contained" className="container__btn-salvar" endIcon={<CheckCircleIcon />}>
+        <Button
+          type="submit"
+          variant="contained"
+          className="container__btn-salvar"
+          endIcon={<CheckCircleIcon />}
+        >
           Salvar
         </Button>
       </Box>

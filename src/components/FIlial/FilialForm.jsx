@@ -181,7 +181,7 @@ const FilialForm = ({ onSubmit, onClose, initialData = {} }) => {
         required
       />
       <FormControl fullWidth margin="normal" size="small">
-        <InputLabel id="fk_empresa_label">Empresa</InputLabel>
+        <InputLabel id="fk_empresa_label">Filial</InputLabel>
         {loadingEmpresas ? (
           <CircularProgress size={24} />
         ) : (
