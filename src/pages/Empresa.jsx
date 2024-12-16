@@ -102,7 +102,7 @@ const Empresa = () => {
             fetchEmpresas(currentPage);
         } catch (error) {
             console.error("Erro ao excluir empresa:", error);
-            setSnackbarMessage("Erro ao excluir empresa. Tente novamente.");
+
             toast.error("Erro ao excluir empresa. Tente novamente.");
             setSnackbarOpen(true);
         } finally {
