@@ -12,11 +12,11 @@ import {
     Alert,
     CircularProgress,
 } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+
 import ClientForm from "../components/Contratos/ClientForm";
 import ClientTable from "../components/Contratos/ClientTable";
 import "../styles/contatos/contratos.scss";
-import { FaCheckCircle, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
 import { createContrato, deleteContrato, getContratos, updateContrato } from "../services/contratoService";
 

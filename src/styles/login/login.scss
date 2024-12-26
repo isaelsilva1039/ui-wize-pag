@@ -10,9 +10,9 @@
 
 .login-paper {
     display: flex;
-    width: 80%;
-    max-width: 900px;
-    height: 500px;
+    width: 70%;
+    // max-width: 900px;
+    height: 700px;
     border-radius: 4px;
     overflow: hidden;
     flex-direction: row; // Default layout for larger screens
@@ -50,8 +50,8 @@
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-
+    
+    justify-content: space-around;
     @media (max-width: 768px) {
  
         padding: 1rem; // Reduce padding for mobile
@@ -72,7 +72,8 @@
 }
 
 .login-button {
-    background-color: #1976d2;
+    margin-top: 10px !important;
+    background-color: $primary !important;
     color: white;
 
     &:hover {
@@ -84,3 +85,34 @@
     margin-top: 1rem;
     text-align: center;
 }
+
+
+
+.welcome-container {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    text-transform: none; /* Impede a transformação automática de maiúsculas/minúsculas */
+
+  }
+  
+  .welcome-text {
+    font-size: 2em;
+    font-weight: 700;
+    color: $primary; /* Cor principal */
+  }
+
+//   $primary : #004080;
+// $secundary: #1b78d5;
+  
+  .highlighted-text {
+    // font-style: italic;
+    color: $primary; /* Cor de destaque */
+  }
+  
+  .login-prompt {
+    font-size: 1.2em;
+    margin-top: 20px;
+    color: #555;
+    text-transform: none; /* Impede a transformação automática de maiúsculas/minúsculas */
+  }
+  

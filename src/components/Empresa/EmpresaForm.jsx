@@ -38,7 +38,7 @@
           endereco: initialData.endereco || "",
           cnpj: initialData.cnpj || "",
           contrato: initialData.contrato ? initialData.contrato.ID : "",
-        });
+        }); 
       }
     }, [initialData]);
 
