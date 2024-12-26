@@ -13,10 +13,15 @@ import {
     Snackbar,
     Alert,
     CircularProgress,
+    Card,
+    CardContent,
+    CardActions,
+    useMediaQuery,
+    IconButton,
 } from "@mui/material";
+import { FaUser, FaEdit, FaTrash, FaHistory } from "react-icons/fa";
+import { MdBusiness, MdHome, MdStore, MdCheckCircle, MdPhone, MdEmail } from "react-icons/md";
 import "../styles/contatos/contratos.scss";
-import { FaUser } from "react-icons/fa";
-
 import EmpresaTable from "../components/Empresa/EmpresaTable";
 import EmpresaForm from "../components/Empresa/EmpresaForm";
 import { getEmpresas, createEmpresa, updateEmpresa, deleteEmpresa } from "../services/empresaService";
@@ -25,6 +30,7 @@ import { toast } from "react-toastify"; // Import do toast
 
 const Empresa = () => {
     const { token } = useContext(AuthContext);
+    const isMobile = useMediaQuery('(max-width:768px)');
 
     const [tabIndex, setTabIndex] = useState(0);
     const [open, setOpen] = useState(false);
@@ -51,7 +57,7 @@ const Empresa = () => {
     };
 
     const fetchEmpresas = async (page = 1) => {
-        setLoading(true); 
+        setLoading(true);
         try {
             const response = await getEmpresas(token, page, pageSize);
             setEmpresas(response.data);
@@ -65,13 +71,13 @@ const Empresa = () => {
     };
 
     const addEmpresa = async (novaEmpresa) => {
-        setLoading(true); 
+        setLoading(true);
         try {
             await createEmpresa(token, novaEmpresa);
             toast.success("Empresa cadastrada com sucesso!");
             setSnackbarOpen(true);
             setOpen(false);
-            fetchEmpresas(currentPage); 
+            fetchEmpresas(currentPage);
         } catch (error) {
             console.error("Erro ao criar empresa:", error?.response?.data?.error);
             toast.error(error?.response?.data?.error);
@@ -90,19 +96,18 @@ const Empresa = () => {
             console.error("Erro ao atualizar empresa:", error);
             toast.error("Erro ao atualizar empresa. Tente novamente.");
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     };
 
     const handleDeleteEmpresa = async (empresa) => {
-        setLoading(true); 
+        setLoading(true);
         try {
-            await deleteEmpresa(token, empresa?.id , empresa?.deleted_at);
+            await deleteEmpresa(token, empresa?.id, empresa?.deleted_at);
             toast.success("Empresa removida com sucesso!");
             fetchEmpresas(currentPage);
         } catch (error) {
             console.error("Erro ao excluir empresa:", error);
-
             toast.error("Erro ao excluir empresa. Tente novamente.");
             setSnackbarOpen(true);
         } finally {
@@ -133,10 +138,8 @@ const Empresa = () => {
     ];
 
     useEffect(() => {
-        fetchEmpresas(); 
+        fetchEmpresas();
     }, []);
-
-    
 
     return (
         <div className="container">
@@ -165,20 +168,45 @@ const Empresa = () => {
                                     Nova Empresa
                                 </Button>
                             </Box>
-                            <EmpresaTable
-                                columns={empresaColumns}
-                                data={empresas}
-                                onEdit={(item) => setEditEmpresa(item)}
-                                onDelete={(empresa) => handleDeleteEmpresa(empresa)}
-                            />
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                    mt: 2,
-                                }}
-                            >
+                            {isMobile ? (
+                                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                                    {empresas.map((empresa) => (
+                                        <Card key={empresa.id} sx={{ borderLeft: '4px solid #1b78d5', flex: '1 1 45%' }}>
+                                            <CardContent>
+                                                <Typography variant="h6"><MdBusiness style={{ color: 'gray', marginRight: 8 }} />{empresa.descricao}</Typography>
+                                                <Typography><MdBusiness style={{ color: 'gray', marginRight: 8 }} />{empresa.razao_social}</Typography>
+                                                <Typography><MdHome style={{ color: 'gray', marginRight: 8 }} />{empresa.nome_fantasia}</Typography>
+                                                <Typography><MdStore style={{ color: 'gray', marginRight: 8 }} />{empresa.endereco}</Typography>
+                                                <Typography><MdCheckCircle style={{ color: 'gray', marginRight: 8 }} />{empresa.cnpj}</Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <IconButton
+                                                    color="primary"
+                                                    onClick={() => setEditEmpresa(empresa)}
+                                                >
+                                                    <FaEdit />
+                                                </IconButton>
+                                                <IconButton
+                                                    color="secondary"
+                                                    onClick={() => handleDeleteEmpresa(empresa)}
+                                                >
+                                                    {empresa?.deleted_at ? (<FaHistory  color="gray"/>):(<FaTrash  color="red"/>) }
+                                                    
+                                                </IconButton>
+                                            </CardActions>
+                                        </Card>
+                                    ))}
+                                </Box>
+                            ) : (
+                                <EmpresaTable
+                                    columns={empresaColumns}
+                                    data={empresas}
+                                    onEdit={(item) => setEditEmpresa(item)}
+                                    onDelete={(empresa) => handleDeleteEmpresa(empresa)}
+                                />
+                            )}
+
+                            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
                                 <Button
                                     variant="contained"
                                     color="primary"

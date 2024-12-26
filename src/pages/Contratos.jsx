@@ -11,17 +11,23 @@ import {
     Snackbar,
     Alert,
     CircularProgress,
+    Card,
+    CardContent,
+    CardActions,
+    useMediaQuery,
+    IconButton,
 } from "@mui/material";
-
+import { FaUser, FaEdit, FaTrash } from "react-icons/fa";
+import { MdPerson, MdBusiness, MdHome, MdStore, MdCheckCircle, MdPhone, MdWhatsapp, MdEmail, MdPersonOutline } from "react-icons/md";
+import { AuthContext } from "../context/AuthContext";
+import { createContrato, deleteContrato, getContratos, updateContrato } from "../services/contratoService";
 import ClientForm from "../components/Contratos/ClientForm";
 import ClientTable from "../components/Contratos/ClientTable";
 import "../styles/contatos/contratos.scss";
-import { FaUser } from "react-icons/fa";
-import { AuthContext } from "../context/AuthContext";
-import { createContrato, deleteContrato, getContratos, updateContrato } from "../services/contratoService";
 
 const Contratos = () => {
     const { token } = useContext(AuthContext);
+    const isMobile = useMediaQuery('(max-width:768px)');
 
     const [tabIndex, setTabIndex] = useState(0);
     const [open, setOpen] = useState(false);
@@ -160,12 +166,47 @@ const Contratos = () => {
                                     Adicionar Novo
                                 </Button>
                             </Box>
-                            <ClientTable
-                                columns={clientColumns}
-                                data={clientes}
-                                onEdit={(item) => setEditCliente(item)}
-                                onDelete={(id) => handleDeleteContrato(id)}
-                            />
+                            {isMobile ? (
+                                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                                    {clientes.map((cliente) => (
+                                        <Card key={cliente.ID} sx={{ borderLeft: '4px solid #1b78d5', flex: '1 1 45%' }}>
+                                            <CardContent>
+                                                <Typography variant="h6"><MdPerson style={{ color: 'gray', marginRight: 8 }} />{cliente.Nome}</Typography>
+                                                <Typography><MdBusiness style={{ color: 'gray', marginRight: 8 }} />{cliente.CNPJ}</Typography>
+                                                <Typography><MdPersonOutline style={{ color: 'gray', marginRight: 8 }} />{cliente.CPF}</Typography>
+                                                <Typography><MdHome style={{ color: 'gray', marginRight: 8 }} />{cliente.Endereco}</Typography>
+                                                <Typography><MdStore style={{ color: 'gray', marginRight: 8 }} />{cliente.PDV}</Typography>
+                                                <Typography><MdCheckCircle style={{ color: 'gray', marginRight: 8 }} />{cliente.AtivoInativo}</Typography>
+                                                <Typography><MdPhone style={{ color: 'gray', marginRight: 8 }} />{cliente.Telefone}</Typography>
+                                                <Typography><MdWhatsapp style={{ color: 'gray', marginRight: 8 }} />{cliente.Whatsapp}</Typography>
+                                                <Typography><MdEmail style={{ color: 'gray', marginRight: 8 }} />{cliente.Email}</Typography>
+                                                <Typography><MdPersonOutline style={{ color: 'gray', marginRight: 8 }} />{cliente.Responsavel}</Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <IconButton
+                                                    color="primary"
+                                                    onClick={() => setEditCliente(cliente)}
+                                                >
+                                                    <FaEdit />
+                                                </IconButton>
+                                                <IconButton
+                                                    color="secondary"
+                                                    onClick={() => handleDeleteContrato(cliente.ID)}
+                                                >
+                                                    <FaTrash />
+                                                </IconButton>
+                                            </CardActions>
+                                        </Card>
+                                    ))}
+                                </Box>
+                            ) : (
+                                <ClientTable
+                                    columns={clientColumns}
+                                    data={clientes}
+                                    onEdit={(item) => setEditCliente(item)}
+                                    onDelete={(id) => handleDeleteContrato(id)}
+                                />
+                            )}
 
                             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
                                 <Button

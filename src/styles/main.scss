@@ -455,6 +455,10 @@ h1 {
 
     .navbar{
         width: auto;
+        position: fixed;
+        width: 94%;
+        /* margin-top: 23px; */
+        z-index: 2;
     }
   
     .navbar .menu-toggle {
@@ -471,11 +475,21 @@ h1 {
         width: 100%;
         padding: 0px;
         border: none;
+        margin-top: 70px;
     }
 
     .css-1r4ai6y {
         width: 100%;
         padding: 0px !important;
+    }
+
+    .css-178yklu {
+        padding: 12px !important;
+    }
+
+    .css-1dqpc7h{
+        display: flex;
+        flex-direction: column;
     }
 
   }

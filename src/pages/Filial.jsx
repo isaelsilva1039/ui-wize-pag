@@ -11,18 +11,23 @@ import {
     Snackbar,
     Alert,
     CircularProgress,
+    Card,
+    CardContent,
+    CardActions,
+    useMediaQuery,
+    IconButton,
 } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // Importação do ícone do MUI
+import { FaUser, FaEdit, FaTrash } from "react-icons/fa";
+import { MdBusiness, MdHome, MdStore, MdCheckCircle, MdPhone, MdEmail } from "react-icons/md";
 import "../styles/contatos/contratos.scss";
-import { FaUser } from "react-icons/fa";
-
 import FilialTable from "../components/FIlial/FilialTable";
 import FilialForm from "../components/FIlial/FilialForm";
-import { getFiliais, createFilial, updateFilial, deleteFilial } from "../services/filialService"; // Assumindo que esses serviços existem.
+import { getFiliais, createFilial, updateFilial, deleteFilial } from "../services/filialService";
 import { AuthContext } from "../context/AuthContext";
 
 const Filial = () => {
     const { token } = useContext(AuthContext);
+    const isMobile = useMediaQuery('(max-width:768px)');
 
     const [tabIndex, setTabIndex] = useState(0);
     const [open, setOpen] = useState(false);
@@ -77,7 +82,6 @@ const Filial = () => {
             console.error("Erro ao criar filial:", error);
             setSnackbarMessage("Erro ao cadastrar filial. Tente novamente.");
             setSnackbarSeverity("error"); // Define o alerta como erro
-
             setSnackbarOpen(true);
         } finally {
             setLoading(false); // Desativa o spinner
@@ -96,7 +100,6 @@ const Filial = () => {
             console.error("Erro ao atualizar filial:", error);
             setSnackbarMessage("Erro ao atualizar filial. Tente novamente.");
             setSnackbarSeverity("error"); // Define o alerta como erro
-
             setSnackbarOpen(true);
         } finally {
             setLoading(false); // Desativa o spinner
@@ -109,14 +112,12 @@ const Filial = () => {
             await deleteFilial(token, id);
             setSnackbarMessage("Filial removida com sucesso!");
             setSnackbarSeverity("success"); // Define o alerta como sucesso
-
             setSnackbarOpen(true);
             fetchFiliais(currentPage); // Atualiza os dados
         } catch (error) {
             console.error("Erro ao excluir filial:", error);
             setSnackbarMessage("Erro ao excluir filial. Tente novamente.");
             setSnackbarSeverity("error"); // Define o alerta como erro
-
             setSnackbarOpen(true);
         } finally {
             setLoading(false); // Desativa o spinner
@@ -143,14 +144,12 @@ const Filial = () => {
         { id: "cnpj", label: "CNPJ", visible: true },
         { id: "inscricao_estadual", label: "I.C.S", visible: true },
         { id: "actions", label: "Ações", visible: true },
-
     ];
-    
+
     const processedFiliais = filiais.map((filial) => ({
         ...filial,
         nome_fantasia: filial.empresa?.nome_fantasia || "N/A",
     }));
-    
 
     useEffect(() => {
         fetchFiliais(); // Carrega os dados na montagem do componente
@@ -181,20 +180,44 @@ const Filial = () => {
                                     Nova Filial
                                 </Button>
                             </Box>
-                            <FilialTable
-                                columns={filialColumns}
-                                data={processedFiliais}
-                                onEdit={(item) => setEditFilial(item)}
-                                onDelete={(filial) => handleDeleteFilial(filial.id)}
-                            />
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                    mt: 2,
-                                }}
-                            >
+                            {isMobile ? (
+                                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                                    {processedFiliais.map((filial) => (
+                                        <Card key={filial.id} sx={{ borderLeft: '4px solid #1b78d5', flex: '1 1 45%' }}>
+                                            <CardContent>
+                                                <Typography variant="h6"><MdBusiness style={{ color: 'gray', marginRight: 8 }} />{filial.descricao}</Typography>
+                                                <Typography><MdBusiness style={{ color: 'gray', marginRight: 8 }} />{filial.nome_fantasia}</Typography>
+                                                <Typography><MdHome style={{ color: 'gray', marginRight: 8 }} />{filial.endereco}</Typography>
+                                                <Typography><MdStore style={{ color: 'gray', marginRight: 8 }} />{filial.cnpj}</Typography>
+                                                <Typography><MdCheckCircle style={{ color: 'gray', marginRight: 8 }} />{filial.inscricao_estadual}</Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <IconButton
+                                                    color="primary"
+                                                    onClick={() => setEditFilial(filial)}
+                                                >
+                                                    <FaEdit />
+                                                </IconButton>
+                                                <IconButton
+                                                    color="secondary"
+                                                    onClick={() => handleDeleteFilial(filial.id)}
+                                                >
+                                                    <FaTrash color="red" />
+                                                </IconButton>
+                                            </CardActions>
+                                        </Card>
+                                    ))}
+                                </Box>
+                            ) : (
+                                <FilialTable
+                                    columns={filialColumns}
+                                    data={processedFiliais}
+                                    onEdit={(item) => setEditFilial(item)}
+                                    onDelete={(filial) => handleDeleteFilial(filial.id)}
+                                />
+                            )}
+
+                            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -254,9 +277,7 @@ const Filial = () => {
                 onClose={() => setSnackbarOpen(false)}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
-                <Alert onClose={() => setSnackbarOpen(false)} 
-                severity={snackbarSeverity}
-                sx={{ width: "100%" }}>
+                <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{ width: "100%" }}>
                     {snackbarMessage}
                 </Alert>
             </Snackbar>
