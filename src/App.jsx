@@ -12,14 +12,13 @@ import Login from './pages/login';
 import Tokens from './pages/Tokens';
 import Usuarios from './pages/Usuarios';
 
-
 const PrivateRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
   return token ? children : <Navigate to="/" />;
 };
 
 function App() {
-  const [closeMenu, setCloseMenu] = useState(false);
+  const [closeMenu, setCloseMenu] = useState(true);
 
   return (
     <AuthProvider>
@@ -33,13 +32,12 @@ function App() {
                 <div className="app-container">
                   <Sidebar closeMenu={closeMenu} setCloseMenu={setCloseMenu} />
                   <div className={`main-content ${closeMenu ? "sidebar-closed" : "sidebar-open"}`}>
-                    <NavBar />
+                    <NavBar closeMenu={closeMenu} setCloseMenu={setCloseMenu} />
                     <Routes>
                       <Route path="/contratos" element={<Contratos />} />
                       <Route path="/empresa" element={<Empresa />} />
                       <Route path="/filial" element={<Filial />} />
                       <Route path="/tokens" element={<Tokens />} />
-                      {/* <Route path="/support" element={<Support />} /> */}
                       <Route path="/faturas" element={<Transactions />} />
                       <Route path="/usuarios" element={<Usuarios />} />
                     </Routes>

@@ -402,3 +402,81 @@ h1 {
         display: flex;
     }
 }
+
+
+
+
+
+
+
+
+/* Ajuste para a animação funcionar bem em telas pequenas */
+@media (max-width: 768px) {
+    .sidebar {
+      position: fixed; /* Mantenha o sidebar fixo na tela */
+      top: 0;
+      left: 0; /* Sidebar começa fora da tela */
+      height: 100vh;
+      width: 250px;
+      background-color: #fff;
+      transition: transform 0.3s ease-in-out; /* Transição suave */
+      z-index: 9;
+    }
+
+
+    .sidebar.active .burgerContainer.active{
+        display: none;
+    }
+  
+    /* Quando o menu estiver fechado, ele está completamente fora da tela */
+    .sidebar.sidebar-closed {
+      transform: translateX(0); /* Sidebar totalmente fora da tela */
+    }
+  
+    /* Quando o menu estiver aberto */
+    .sidebar.active {
+      right: 300px; /* Sidebar entra a partir do lado esquerdo */
+      transform: translateX(-100%); /* Sidebar aparece */
+    }
+  
+    .main-content.sidebar-closed {
+      margin-left: 0px; /* Não há espaço para o menu */
+    }
+  
+    .main-content.sidebar-open {
+      margin-left: 0px; /* Deixe o espaço à esquerda quando o menu estiver aberto */
+    }
+  
+    /* Ajuste no conteúdo principal */
+    .main-content {
+      padding: 0;
+      transition: margin-left 0.3s ease-in-out; /* Transição suave para o conteúdo */
+    }
+
+    .navbar{
+        width: auto;
+    }
+  
+    .navbar .menu-toggle {
+      display: block;
+      font-size: 1.5rem;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .container {
+        background: #ffffff;
+        width: fit-content;
+        display: flex;
+        width: 100%;
+        padding: 0px;
+        border: none;
+    }
+
+    .css-1r4ai6y {
+        width: 100%;
+        padding: 0px !important;
+    }
+
+  }
+  
