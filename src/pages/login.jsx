@@ -13,6 +13,8 @@ import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import RegistrationWizard from '../components/Contratos/RegistrationWizard';
+import { Image } from '@mui/icons-material';
 
 const Login = () => {
     const { login } = useContext(AuthContext);
@@ -28,58 +30,116 @@ const Login = () => {
     const navigate = useNavigate();
     const [showError, setShowError] = useState(false);
 
+
+
+      const [userData, setUserData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        passwordConfirmation: "",
+      });
+      const [companyData, setCompanyData] = useState({
+        companyName: "",
+        companyEmail: "",
+        companyPhone: "",
+        cnpj: "",
+        socialReason: "",
+      });
+
+
     const handleLogin = async () => {
         setLoading(true); // Ativa o loading
         try {
-            const response = await axios.post(`${url_api}/auth/login`, {
-                username: email,
-                password: password,
-            });
-
-            if (response.status === 200) {
-                const { token, user } = response.data;
-                login(token, user);
-                navigate('/contratos');
-                toast.success("Login realizado com sucesso!"); // Notificação de sucesso
-            }
-        } catch (error) {
-            setShowError(true);
-            toast.error("Erro ao fazer login. Tente novamente."); // Notificação de erro
-        } finally {
-            setLoading(false); // Desativa o loading
-        }
-    };
-
-    const handleRegister = async () => {
-        if (password !== confirmPassword) {
-            setShowError(true);
-            toast.error("As senhas não coincidem!"); // Notificação de erro
-            return;
-        }
-
-        setLoading(true); // Ativa o loading
-        try {
-            const response = await axios.post(`${url_api}/auth/register`, {
-                name: name,
-                username: email, // Define o username como o email
-                password: password,
-                type: userType,
+            const response = await axios.post(`${url_api}/api/auth/login`, {
                 email: email,
-                birth_date: birthDate,
-                last_name: lastName,
+                password: password,
             });
 
             if (response.status === 200) {
-                setIsRegistering(false);
-                toast.success("Cadastro realizado com sucesso!");
+                
+              const { evolu_token, user } = response?.data;
+
+              console.log(evolu_token)
+              console.log(user)
+
+                login(evolu_token, user);
+              
+                navigate('/pagamentos/links');
+              
+                toast.success("Login realizado com sucesso!");
             }
         } catch (error) {
             setShowError(true);
-            toast.error("Erro ao realizar o cadastro. Tente novamente."); // Notificação de erro
+            toast.error("Erro ao fazer login. Tente novamente.");
         } finally {
-            setLoading(false); // Desativa o loading
+            setLoading(false);
         }
     };
+
+   // Função de Cadastro
+   const handleRegister = async () => {
+    if (password !== confirmPassword) {
+        setShowError(true);
+        toast.error("As senhas não coincidem!");
+        return;
+    }
+
+    setLoading(true); // Ativa o loading
+    try {
+        const response = await axios.post(`${url_api}/api/auth/register`, {
+            user: {
+                name: userData?.name,
+                email: userData?.email,
+                password_confirmation: userData?.password,
+            },
+            company: {
+                company_name: companyData?.companyName,
+                company_email: companyData?.companyEmail,
+                company_phone: companyData?.companyPhone,
+                cnpj: companyData?.cnpj,
+                social_reason: companyData?.socialReason,
+            }
+        });
+
+        if (response.status === 200) {
+            setIsRegistering(false);
+            toast.success("Cadastro realizado com sucesso!");
+        }
+    } catch (error) {
+        setShowError(true);
+
+
+        const errorMessages = error.response?.data?.errors;
+        
+        if (errorMessages) {
+
+            const translatedErrors = Object.keys(errorMessages).map((key) => {
+                if (key === "user.email") {
+                    return "O email do usuário já foi registrado.";
+                }
+                if (key === "company.cnpj") {
+                    return "O CNPJ da empresa já está em uso.";
+                }
+                if (key === "company.company_email") {
+                    return "O email da empresa já está em uso.";
+                }
+                return errorMessages[key][0];
+            });
+
+  
+            translatedErrors.forEach((message) => toast.error(message));
+        } else {
+            toast.error("Erro ao realizar o cadastro. Tente novamente.");
+        }
+    } finally {
+        setLoading(false);
+    }
+};
+
+
+  const onSave = ()=>{
+    handleRegister()
+  }
 
     const handleCloseError = () => {
         setShowError(false);
@@ -88,7 +148,7 @@ const Login = () => {
     return (
         <Box className="login-container">
             <Paper className="login-paper">
-                {/* Left Side (Illustration) */}
+                {/* Left Side (Illustration)
                 <Box className="login-left">
                     <Box
                         component="img"
@@ -96,7 +156,7 @@ const Login = () => {
                         alt="Illustration"
                         className="login-illustration"
                     />
-                </Box>
+                </Box> */}
 
                 {/* Right Side (Login / Register Form) */}
                 <Box className="login-right">
@@ -107,144 +167,30 @@ const Login = () => {
                             {!isRegistering && (
                                 
                                 <>
+                                <img style={{height:'38px', width:'38px'}} src="image2.png" alt="Imagem" />
+
                                 <div className="welcome-text">
                                     Bem-vindo
                                 </div>
-                                <span className="highlighted-text">WORK parceiros</span>
+                                <span className="highlighted-text">WizePag</span>
+                                {/* WizePag – "Wize" vem de sabedoria, significando um pagamento inteligente */}
                                 </>
                             )}
                           
                         </div>
                     )}
 
-
-
-                    {/* 
-                    <Typography variant="h4" gutterBottom>
-                        {isRegistering ? 'Cadastrar' : 'Login'}
-                    </Typography> */}
-
-
-
-                    {/* Exibe o formulário de login ou de cadastro */}
+  
+                  {/* Exibe o formulário de login ou de cadastro */}
                     {isRegistering ? (
-                        <>
-
-
-<TextField
-        label="Nome"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <PersonIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        label="Sobrenome"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={lastName}
-        onChange={(e) => setLastName(e.target.value)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <PersonOutlineIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        label="Email"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <EmailIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        label="Senha"
-        variant="outlined"
-        type="password"
-        fullWidth
-        margin="normal"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <LockIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        label="Confirmar Senha"
-        variant="outlined"
-        type="password"
-        fullWidth
-        margin="normal"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <LockIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        label="Data de Nascimento"
-        variant="outlined"
-        type="date"
-        fullWidth
-        margin="normal"
-        value={birthDate}
-        onChange={(e) => setBirthDate(e.target.value)}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <CalendarTodayIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-                            <Button
-                                onClick={handleRegister}
-                                variant="contained"
-                                className="login-button"
-                                fullWidth
-                                disabled={loading} // Desativa o botão enquanto carrega
-                            >
-                                {loading ? 'Cadastrando...' : 'Criar Conta'}
-                            </Button>
-                            <Box mt={2}>
-                                <Typography variant="subtitle2" align="center" sx={{ textTransform: 'none' }}>
-                                    Já tem uma conta?{' '}
-                                    <Link href="#" onClick={() => setIsRegistering(false)}>
-                                        Faça login
-                                    </Link>
-                                </Typography>
-                            </Box>
-                        </>
+                      <RegistrationWizard
+                        setCompanyData={setCompanyData}
+                        setUserData={setUserData}
+                        setIsRegistering={setIsRegistering}
+                        onSave={onSave}
+                        userData={userData}
+                        companyData={companyData}
+                      />
                     ) : (
                         <>
                           

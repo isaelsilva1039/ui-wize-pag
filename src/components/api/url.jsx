@@ -1,2 +1,2 @@
-export const  url_api = 'https://api.parceiros.workinnovation.com.br'
-// export const  url_api = 'http://localhost:8082'
+// export const  url_api = 'https://api.parceiros.workinnovation.com.br'
+export const  url_api = 'http://localhost:8000'

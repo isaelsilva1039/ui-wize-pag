@@ -2,25 +2,72 @@
 
 // contratos.scss
 
+table{
+    border-radius: 5px;
+}
+
 table thead {
-    background: $veryLightGreen; // Cor de fundo ao passar o mouse
+    background: $primary  !important; // Cor de fundo ao passar o mouse
     height: 10px !important;
+    color: $white_original  !important;
 
     th {
+        color: $white_original  !important;
         height: 10px !important;
     }
 
     tr th {
-        font-weight: 600 !important;
+        color: $white_original  !important;
+        font-weight: 300 !important;
+
+
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        font-weight: 400;
+        font-size: 0.875rem;
+        line-height: 1.43;
+        /* letter-spacing: 0.01071em; */
+        display: table-cell;
+        vertical-align: inherit;
+        border-bottom: 1px solid rgba(224, 224, 224, 1);
+        text-align: left;
+        padding: 12px 0px !important;
+        color: rgba(0, 0, 0, 0.87);
+        line-height: 1.5rem; 
+    
+    }
+
+}
+
+table tbody {
+    background: $primary  !important; // Cor de fundo ao passar o mouse
+      // background: $primary_pro  !important; // Cor de fundo ao passar o mouse
+
+
+    tr td {
+        color: $white_original  !important;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        font-weight: 400;
+        font-size: 0.875rem;
+        line-height: 1.43;
+        letter-spacing: 0.01071em;
+        display: table-cell;
+        vertical-align: inherit;
+        border-bottom: 1px solid $primary_pro !important;
+        text-align: left;
+        padding: 4px !important;
+        color: rgba(0, 0, 0, 0.87);
+    
     }
 }
 
 table tbody tr {
-    border-left: 4px solid transparent; // Borda inicial transparente
-    transition: border-left-color 0.3s ease, background 0.3s ease; // Definindo as transições
+    color: $white_original !important;
+    
+    // border-left: 4px solid transparent; // Borda inicial transparente
+    // transition: border-left-color 0.3s ease, background 0.3s ease; // Definindo as transições
 
     &:hover {
-        background: $veryLightGreen; // Cor de fundo ao passar o mouse
-        border-left-color: $primary; // Mudança suave da cor da borda
+        background: $primary_pro; // Cor de fundo ao passar o mouse
+        border-left-color: $primary_pro; // Mudança suave da cor da borda
     }
 }

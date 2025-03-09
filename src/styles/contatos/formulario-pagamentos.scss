@@ -1,0 +1,79 @@
+@import "../_variables";
+
+
+.formulario-pagamento{
+    
+    color: $white_original;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .MuiTabs-scroller{
+
+        & button {
+            // background: $primary_pro  !important ;
+            color: $white_original !important;
+            // border: 1px solid $border;
+        }
+
+        & .Mui-selected{
+            color: $secundary !important;
+        }
+    }
+
+    .MuiBox-root{
+
+        display: flex;
+        gap:12px;
+        flex-direction: column;
+
+        .MuiFormControl-root{
+        color: $secundary !important;
+
+        & label {
+            color: $white_original !important;
+
+        }
+
+        & .MuiInputBase-root{
+            background: $primary_pro  !important ;
+            color: $white_original !important;
+            border: 1px solid $border;
+            height: 48px !important;
+        }
+        }
+
+
+    }
+
+
+    .MuiBox-root .css-1qm1lh{
+
+       padding: 12px;
+      color: $white_original !important;
+      background: $primary_pro !important;
+      border: 1px solid $border !important;
+      border-radius: 8px !important;
+
+  }
+
+
+    .css-gg4vpm{
+        display: flex;
+        gap:12px;
+        flex-direction: row;  
+
+        & button{
+            // color: $white_original !important;
+            // background: $primary_pro !important;
+            // border: 1px solid $border !important;
+            // border-radius: 8px !important;
+          }
+    }
+
+    .MuiBox-root .css-1qm1lh .MuiTypography-root {
+        display: flex;
+        align-items: center;
+        
+    }
+}

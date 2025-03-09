@@ -41,7 +41,7 @@ const NavBar = ({ closeMenu, setCloseMenu }) => {
                 <FaBars size={24} /> {/* Ícone de menu */}
             </div>
             <div>
-                {location.pathname === "/" ? "Contratos" : location.pathname.replace("/", "")}
+                {'Pagamentos'}
             </div>
             <div className="logout" onClick={handleLogout}>
                 <FiLogOut size={20} /> <span>Sair</span>

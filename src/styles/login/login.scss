@@ -5,15 +5,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to bottom, #d6eaff, #a3d4f7);
+    background: $veryLightGreen;
 }
 
 .login-paper {
     display: flex;
-    width: 70%;
+    width: 30%;
     // max-width: 900px;
-    height: 700px;
-    border-radius: 4px;
+    height: 600px;
+    border-radius: 8px !important;
     overflow: hidden;
     flex-direction: row; // Default layout for larger screens
 
@@ -50,6 +50,7 @@
     padding: 2rem;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     
     justify-content: space-around;
     @media (max-width: 768px) {
@@ -73,8 +74,15 @@
 
 .login-button {
     margin-top: 10px !important;
-    background-color: $primary !important;
-    color: white;
+    background-color: $secundary !important;
+    color: $white_original !important;
+
+    //   button{
+    // color: $white_original !important;
+    // background: $primary_pro !important;
+    // border: 1px solid $border !important;
+    // border-radius: 8px !important;
+//   }
 
     &:hover {
         background-color: #155a9a !important;
@@ -92,13 +100,14 @@
     text-align: center;
     font-family: 'Arial', sans-serif;
     text-transform: none; /* Impede a transformação automática de maiúsculas/minúsculas */
+    color: $white_original !important;
 
   }
   
   .welcome-text {
     font-size: 2em;
     font-weight: 700;
-    color: $primary; /* Cor principal */
+    color: $white_original !important;
   }
 
 //   $primary : #004080;
@@ -106,7 +115,7 @@
   
   .highlighted-text {
     // font-style: italic;
-    color: $primary; /* Cor de destaque */
+    color: $white_original !important;
   }
   
   .login-prompt {
@@ -116,3 +125,91 @@
     text-transform: none; /* Impede a transformação automática de maiúsculas/minúsculas */
   }
   
+  .voltar-btn{
+    // background-color: $secundary !important;
+    color: $secundary !important;
+    border: 1px solid $border  !important;
+  }
+
+  .MuiStepLabel-iconContainer{
+    // background-color: $secundary !important;
+    // color: $secundary !important;
+
+    // svg {
+    //     // background-color: $secundary !important;
+    //     color: $secundary !important;
+    
+    // }
+
+
+
+  }
+
+
+  .login-container {
+
+
+
+
+  .MuiStepLabel-label{
+    color: $white_original !important;
+  }
+
+  .MuiStepper-root{
+    background: $primary_pro;
+    border: 1px solid $border  !important;
+    padding: 8px;
+    border-radius: 4px;
+    width: 100%;
+
+  }
+
+  .MuiBox-root{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .MuiBox-root .css-1yuhvjn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+
+  .titulo-registro{
+    display: flex;
+    flex-direction: column;
+    gap: 1px !important;
+
+    & span{
+        color: $border;
+    }
+  }
+
+  /* Adicione no seu arquivo de estilos global */
+ .Mui-active {
+    color: #1976d2; /* Cor azul */
+
+    svg{
+        color: $secundary !important;
+    }
+  }
+  
+
+  .active-step {
+
+    span{
+        color: $secundary !important;
+    }
+ 
+  }
+
+  .form-registration{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+}

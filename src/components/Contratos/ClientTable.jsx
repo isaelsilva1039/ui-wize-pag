@@ -22,7 +22,7 @@ import {
   Box,
 
 } from "@mui/material";
-import { Settings, Edit, Delete } from "@mui/icons-material";
+import { Settings, Edit, Delete, Link } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import '../../styles/tabela/style.scss'
 
@@ -31,6 +31,7 @@ const ClientTable = ({
   data,
   onEdit,
   onDelete,
+  copyToClipboard,
   title = "",
 }) => {
 
@@ -46,7 +47,7 @@ const ClientTable = ({
       return initialVisibility;
     }
   });
-  
+
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -95,6 +96,8 @@ const ClientTable = ({
     });
     setVisibleColumns(updated);
   };
+
+
 
   return (
     <TableContainer component={Paper}>
@@ -190,6 +193,21 @@ const ClientTable = ({
                   if (column.id === "actions") {
                     return (
                       <TableCell key={column.id}>
+
+                        {copyToClipboard && (
+                          <Tooltip title={item?.active ? "Copiar Link" : "Link Inativo"}>
+                            <IconButton
+                              color={item?.active ? "primary" : "default"}
+                              onClick={() => item?.active && copyToClipboard(item?.url)}
+                              disabled={!item?.active}
+                            >
+                              <Link />
+                            </IconButton>
+                          </Tooltip>
+
+                        )}
+
+
                         {onEdit && (
                           <Tooltip title="Editar">
                             <IconButton
