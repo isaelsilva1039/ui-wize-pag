@@ -28,6 +28,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ShopForm from "../components/Contratos/ShopForm";
 import axios from 'axios'; // Para fazer requisições HTTP
 import { Payment } from "@mui/icons-material";
+import ShopFormEdit from "../components/Contratos/ShopFormEdit";
 
 const LinksPagamentos = () => {
     const location = useLocation();
@@ -264,24 +265,24 @@ const LinksPagamentos = () => {
                 </Dialog>
 
                 {editCliente && (
-                    <Dialog
-                        open={Boolean(editCliente)}
-                        onClose={() => setEditCliente(null)}
-                        fullWidth
-                        maxWidth="sm"
-                    >
-                        <DialogTitle>Editar Link de Pagamento</DialogTitle>
-                        <DialogContent>
-                            <ClientForm
-                                onSubmit={(updatedContrato) => {
-                                    handleUpdateContrato(editCliente.id, updatedContrato);
-                                    setEditCliente(null);
-                                }}
-                                onClose={() => setEditCliente(null)}
-                                initialData={editCliente}
-                            />
-                        </DialogContent>
-                    </Dialog>
+                   
+            
+                        <Dialog
+                            open={Boolean(editCliente)}
+                            onClose={() => setEditCliente(null)}
+                            fullWidth
+                            maxWidth="lg"
+                            >
+                            <DialogTitle>Editar Link de Pagamento</DialogTitle>
+                            <DialogContent>
+                                <ShopFormEdit
+                                onUpdate={onUpdate} // Reuse the same onUpdate function
+                                initialData={editCliente} // Pass the selected payment link data
+                                id={editCliente?.id} // Pass the ID for the PUT request
+                                />
+                            </DialogContent>
+                            </Dialog>
+                                                
                 )}
 
                 <Snackbar
